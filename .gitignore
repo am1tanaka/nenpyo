@@ -60,7 +60,6 @@ dist/
 /app/bower_components/bootstrap-sass-official/assets/stylesheets/bootstrap/_panels.scss
 /app/bower_components/bootstrap-sass-official/assets/stylesheets/bootstrap/_pager.scss
 /app/bower_components/bootstrap-sass-official/assets/stylesheets/bootstrap/_normalize.scss
-/app/bower_components/bootstrap-sass-official/assets/stylesheets/bootstrap/_navs.scss
 /app/bower_components/bootstrap-sass-official/assets/stylesheets/bootstrap/_modals.scss
 /app/bower_components/bootstrap-sass-official/assets/stylesheets/bootstrap/_navbar.scss
 /app/bower_components/bootstrap-sass-official/assets/stylesheets/bootstrap/_mixins.scss
