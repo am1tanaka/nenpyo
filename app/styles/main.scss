@@ -90,3 +90,15 @@ body {
     }
 }
 
+/* nav-pills style*/
+$nav-link-padding-height:  10px;
+$nav-pills-margin-top:  floor(($navbar-height - $line-height-computed - ($nav-link-padding-height * 2)) / 2) !default;
+
+.tmnt-nav-pills-top {
+  > li {
+    > a {
+        margin-top: $nav-pills-margin-top;
+    }
+  }
+}
+

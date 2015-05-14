@@ -75,3 +75,5 @@ dist/
 /app/bower_components/bootstrap-sass-official/assets/stylesheets/bootstrap/mixins/
 /app/bower_components/modernizr/
 /app/bower_components/jquery/
+/app/bower_components/bootstrap-sass-official/assets/stylesheets/bootstrap/_navs.scss
+/app/bower_components/bootstrap-sass-official/assets/stylesheets/bootstrap/_variables.scss

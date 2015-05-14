@@ -419,8 +419,7 @@ $navbar-inverse-toggle-border-color:        #333 !default;
 //##
 
 //=== Shared nav styles
-$nav-link-padding-height:                   10px;
-$nav-link-padding:                          $nav-link-padding-height 15px !default;
+$nav-link-padding:                          10px 15px !default;
 $nav-link-hover-bg:                         $gray-lighter !default;
 
 $nav-disabled-link-color:                   $gray-light !default;
@@ -442,7 +441,6 @@ $nav-tabs-justified-active-link-border-color:     $body-bg !default;
 $nav-pills-border-radius:                   $border-radius-base !default;
 $nav-pills-active-link-hover-bg:            $component-active-bg !default;
 $nav-pills-active-link-hover-color:         $component-active-color !default;
-$nav-pills-margin-top:                      floor(($navbar-height - $line-height-computed - ($nav-link-padding-height * 2)) / 2) !default;
 
 //== Pagination
 //
