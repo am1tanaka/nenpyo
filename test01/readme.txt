@@ -1,3 +1,5 @@
+参考URL https://gihyo.jp/dev/feature/01/milkcocoa-baas/0010?page=2
+
 # milkcocoaの登録
 - https://mlkcca.com に接続
 - 新規登録でユーザー登録をする
@@ -34,13 +36,15 @@ https://auth0.com/docs
 ## 登録手順
 - [auth0](https://auth0.com/) を開いて、[CREATE FREE ACCOUNT]で無料アカウントを作成する
 - Github、Google+、Microsoftアカウントのいずれかで認証するか、メールアドレスと新規のパスワードで登録する
-- Reginは選択肢がないのでUS West。domainは任意のものを登録しておく(tmnt-nenpyo)
+- Reginは選択肢がないのでUS West。domainは任意のものを登録しておく
 - 連携させたいサービスを選択して[Save]
 - 登録が終わると画面が切り替わるので、左のメニューから[Apps/APIs]を選択
 - 右上の[+ NEW APP/API]をクリック
 - 新規に作成するので[CREATE A NEW APP/API]を押す
 - 作成しているアプリの名前を入力する
 - 画面が切り替わるので[Settings]を選ぶ
+- 別のウィンドウでMilkcocoaのHPにログインして、アプリの設定を開いて、[認証]を選び、Auth0のシークレットキーをコピーしておく
+- Auth0のページに戻り、コピーしたシークレットキーを張り付ける
 - 公開したページへのURLをAllowed Callback URLs とAllowed Origins (CORS) に入力する
 - [SAVE CHANGES]で保存する
 - 左のメニューから[Connections]を押す
