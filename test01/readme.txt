@@ -45,7 +45,7 @@ https://auth0.com/docs
 - 画面が切り替わるので[Settings]を選ぶ
 - 別のウィンドウでMilkcocoaのHPにログインして、アプリの設定を開いて、[認証]を選び、Auth0のシークレットキーをコピーしておく
 - Auth0のページに戻り、コピーしたシークレットキーを張り付ける
-- 公開したページへのURLをAllowed Callback URLs とAllowed Origins (CORS) に入力する
+- 公開したページへのURLをAllowed Callback URLs に。ドメイン部分をAllowed Origins (CORS) に入力する
 - [SAVE CHANGES]で保存する
 - 左のメニューから[Connections]を押す
 - ユーザー名とパスワードでの認証を行う場合
@@ -54,6 +54,7 @@ https://auth0.com/docs
     - 任意のデータベース名を入力する
 - ソーシャルログインを使う場合は、[Social]をクリック
     - 使いたいものを有効にして、SAVE
+- Milkcocoaの管理画面にいき、設定を選び、許可するブラウザに
 以上で、Auth0の設定は完了。
 
 - https://github.com/milk-cocoa/document/blob/master/examples/auth-auth0/index.html にアクセスして、ソースコードを自前のindex.htmlに貼り付ける
