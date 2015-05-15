@@ -26,7 +26,7 @@ https://auth0.com/docs
 
 
 # テストアプリをURLに公開
-- 認証時に許可するURLが必要そうなので
+- 認証時に許可するURLが必要なので、github pagesなどに、サンプルをアップしておく
 
 
 # ユーザー認証をつける
@@ -40,7 +40,21 @@ https://auth0.com/docs
 - 右上の[+ NEW APP/API]をクリック
 - 新規に作成するので[CREATE A NEW APP/API]を押す
 - 作成しているアプリの名前を入力する
-- 画面が切り替わるので[Settings]を選び、
+- 画面が切り替わるので[Settings]を選ぶ
+- 公開したページへのURLをAllowed Callback URLs とAllowed Origins (CORS) に入力する
+- [SAVE CHANGES]で保存する
+- 左のメニューから[Connections]を押す
+- ユーザー名とパスワードでの認証を行う場合
+    - Databaseを選択
+    - [+ NEW DATABASE CONNECTION]を押す
+    - 任意のデータベース名を入力する
+- ソーシャルログインを使う場合は、[Social]をクリック
+    - 使いたいものを有効にして、SAVE
+以上で、Auth0の設定は完了。
+
+- https://github.com/milk-cocoa/document/blob/master/examples/auth-auth0/index.html にアクセスして、ソースコードを自前のindex.htmlに貼り付ける
+- var lock = new Auth0Lock()の引数を、自分で登録したDomainとClientIDに変更する
+- new MilkCocoa()の引数を、自分のアプリのものに変更
 
 
 
