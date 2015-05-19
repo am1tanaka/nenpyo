@@ -1,6 +1,7 @@
 
 var React = window.React = require('react'),
     Timer = require("./ui/Timer"),
+    Header = require("./ui/Header"),
     mountNode = document.getElementById("app");
 
 var TodoList = React.createClass({
