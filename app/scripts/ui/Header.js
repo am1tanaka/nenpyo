@@ -9,7 +9,7 @@ var React = require('react');
 /**
  * ヘッダのテキストを描画
  * @param   {string} children 表示する文字列
- *                            @returns {HTML}     ReactDOMを返す
+ *                            @returns {HTML}     ヘッダ用テキストのReactタグを返す
  */
 var HeaderText = React.createClass({
   render : function() {
@@ -25,7 +25,7 @@ var HeaderText = React.createClass({
  * ヘッダ用のボタンを返す
  * @param   {string} icon     表示するアイコンの指定
  * @param   {string} children 表示する文字列
- * @returns {HTML}   ヘッダ用のボタンを返す
+ *                            @returns {HTML}   ヘッダ用のボタンのReactタグを返す
  */
 var HeaderButton = React.createClass({
  render: function() {
@@ -44,7 +44,7 @@ var HeaderButton = React.createClass({
 /**
  * ヘッダーの左右に配置するブロック
  * @param   {string} addclass クラスに付加する要素。左右やhiddenなどを追加
- * @returns {HTML}     ブロック
+ *                            @returns {HTML}   ヘッダーブロックのReactのタグを返す
  */
 var HeaderBlock = React.createClass({
   render: function() {
@@ -60,7 +60,7 @@ var HeaderBlock = React.createClass({
 
 /**
  * ヘッダコンテナ
- * @returns {HTML} [[Description]]
+ * @returns {HTML} ヘッダのReactオブジェクトを返す
  */
 var Header = React.createClass({
   render: function() {
