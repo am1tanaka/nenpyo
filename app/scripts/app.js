@@ -1,8 +1,12 @@
-
+/**
+ * TMNM-Nenpyo　構築
+ * 2015/5/19 YuTanaka(@am1tanaka)
+ */
 var React = window.React = require('react'),
     Timer = require("./ui/Timer"),
     Header = require("./ui/Header"),
-    mountNode = document.getElementById("app");
+    mountNode = document.getElementById("app"),
+    headerNode = document.getElementById("header");
 
 var TodoList = React.createClass({
   render: function() {
@@ -41,5 +45,6 @@ var TodoApp = React.createClass({
 });
 
 
+React.render(<Header />,headerNode);
 React.render(<TodoApp />, mountNode);
 
