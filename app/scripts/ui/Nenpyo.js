@@ -34,9 +34,12 @@ var NenpyoAddTagButton = React.createClass({
     return  <button
                 id={"btnAddTag"}
                 className="btn btn-default col-xs-1"
+                type="button"
                 data-toggle="tooltip"
                 data-placement="bottom"
-                title="列追加">
+                title="列追加"
+                onClick={this.props.onaddcol}
+              >
               <span className="glyphicon glyphicon-plus" />
             </button>;
   }
@@ -47,12 +50,13 @@ var NenpyoTHead = React.createClass({
   render : function() {
     var cnt = 0;
     var num = this.props.tags.length;
+    var onaddcol = this.props.onaddcol;
     var body = this.props.tags.map(function (data) {
       var addtag = "";
       var grid = "col-xs-12";
       cnt++;
       if ((num < 3) && (cnt == num)) {
-          addtag =<NenpyoAddTagButton />
+          addtag =<NenpyoAddTagButton onaddcol={onaddcol} />
           grid = "col-xs-10";
       }
 
@@ -104,9 +108,11 @@ var Nenpyo = React.createClass({
   getInitialState: function() {
     return {tags: ["abc","abcd"]};
   },
-  addTag : function(tag) {
-    if (this.state.tags.length < 2) {
-      this.state.tags.push(tag);
+  handleAddTag : function() {
+    console.log("click:"+this.state.tags.length);
+    if (this.state.tags.length < 3) {
+      this.state.tags.push("");
+      this.setState(this.state);
     }
   },
   convYear: function(ad,mon,dy) {
@@ -155,7 +161,7 @@ var Nenpyo = React.createClass({
       <div>
         <table className="table table-striped table-bordered">
           <NenpyoColgroup tags={this.state.tags} />
-          <NenpyoTHead tags={this.state.tags} />
+          <NenpyoTHead tags={this.state.tags} onaddcol={this.handleAddTag} />
         </table>
       </div>
     );
