@@ -12,12 +12,10 @@ var React = require('react');
 
 var NenpyoColgroup = React.createClass({
   render : function()  {
-    var cnt = 0;
     var num = (this.props.tags.length <= 1) ? "col-xs-10" :
       (this.props.tags.length == 2) ? "col-xs-5" : "col-xs-3";
     var cols = this.props.tags.map(function(data) {
-      cnt++;
-      return <col className={num} key={cnt-1} />;
+      return <col className={num} key={"col"+data.key} />;
     });
 
     // タグが1列
@@ -72,7 +70,7 @@ var NenpyoTHead = React.createClass({
       }
 
       return (
-        <th>
+        <th key={"th"+data.key}>
           <form>
             <span className={grid}>
               <div className="input-group">
@@ -80,8 +78,10 @@ var NenpyoTHead = React.createClass({
                   type="text"
                   placeholder="タグ"
                   className="form-control"
-                  value={data}
-                  id={"tagtext"+(cnt-1)} />
+                  defaultValue={data.tag}
+                  id={"tagtext"+(cnt-1)}
+                  key={"text"+data.key}
+                />
                 <span className="input-group-btn">
                   <button className="btn btn-default" type="button" id={"btnErace"+(cnt-1)}>
                     <span className="glyphicon glyphicon-remove-circle" />
@@ -115,17 +115,16 @@ var NenpyoTHead = React.createClass({
  */
 var Nenpyo = React.createClass({
   getInitialState: function() {
-    return {tags: ["abc","abcd"]};
+    return {tags: [{tag:"",key:new Date().getTime()}]};
   },
   handleAddCol : function() {
     if (this.state.tags.length < 3) {
-      this.state.tags.push("");
+      this.state.tags.push({tag:"",key: new Date().getTime()});
       this.setState({tags : this.state.tags});
     }
   },
   handleRemoveCol : function(e) {
     this.state.tags.splice(e,1);
-    console.log("["+e+"]"+this.state.tags);
     this.setState({tags : this.state.tags});
   },
   convYear: function(ad,mon,dy) {
