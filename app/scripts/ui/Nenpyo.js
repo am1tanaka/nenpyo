@@ -12,10 +12,12 @@ var React = require('react');
 
 var NenpyoColgroup = React.createClass({
   render : function()  {
+    var cnt = 0;
     var num = (this.props.tags.length <= 1) ? "col-xs-10" :
       (this.props.tags.length == 2) ? "col-xs-5" : "col-xs-3";
     var cols = this.props.tags.map(function(data) {
-      return <col className={num} />;
+      cnt++;
+      return <col className={num} key={cnt-1} />;
     });
 
     // タグが1列
