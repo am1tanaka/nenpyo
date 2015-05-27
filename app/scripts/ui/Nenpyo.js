@@ -51,13 +51,22 @@ var NenpyoTHead = React.createClass({
     var cnt = 0;
     var num = this.props.tags.length;
     var onaddcol = this.props.onaddcol;
+    var onrmvcol = this.props.onremovecol;
     var body = this.props.tags.map(function (data) {
       var addtag = "";
       var grid = "col-xs-12";
+      var rmvtag = "";
       cnt++;
       if ((num < 3) && (cnt == num)) {
           addtag =<NenpyoAddTagButton onaddcol={onaddcol} />
           grid = "col-xs-10";
+      }
+      if (num > 1) {
+        rmvtag = (
+                  <button className="btn btn-default" type="button" id={"btnRemove"+(cnt-1)} onClick={onrmvcol.bind(this,cnt-1)}>
+                    <span className="glyphicon glyphicon-remove" />
+                  </button>
+                    );
       }
 
       return (
@@ -69,15 +78,13 @@ var NenpyoTHead = React.createClass({
                   type="text"
                   placeholder="タグ"
                   className="form-control"
-                  defaultValue={data}
+                  value={data}
                   id={"tagtext"+(cnt-1)} />
                 <span className="input-group-btn">
                   <button className="btn btn-default" type="button" id={"btnErace"+(cnt-1)}>
                     <span className="glyphicon glyphicon-remove-circle" />
                   </button>
-                  <button className="btn btn-default" type="button" id={"btnRemove"+(cnt-1)}>
-                    <span className="glyphicon glyphicon-remove" />
-                  </button>
+                  {rmvtag}
                 </span>
               </div>
             </span>
@@ -108,12 +115,16 @@ var Nenpyo = React.createClass({
   getInitialState: function() {
     return {tags: ["abc","abcd"]};
   },
-  handleAddTag : function() {
-    console.log("click:"+this.state.tags.length);
+  handleAddCol : function() {
     if (this.state.tags.length < 3) {
       this.state.tags.push("");
-      this.setState(this.state);
+      this.setState({tags : this.state.tags});
     }
+  },
+  handleRemoveCol : function(e) {
+    this.state.tags.splice(e,1);
+    console.log("["+e+"]"+this.state.tags);
+    this.setState({tags : this.state.tags});
   },
   convYear: function(ad,mon,dy) {
     mon = mon || 12;  // 省略時は最終日にする
@@ -161,7 +172,10 @@ var Nenpyo = React.createClass({
       <div>
         <table className="table table-striped table-bordered">
           <NenpyoColgroup tags={this.state.tags} />
-          <NenpyoTHead tags={this.state.tags} onaddcol={this.handleAddTag} />
+          <NenpyoTHead
+            tags={this.state.tags}
+            onaddcol={this.handleAddCol}
+            onremovecol={this.handleRemoveCol} />
         </table>
       </div>
     );
