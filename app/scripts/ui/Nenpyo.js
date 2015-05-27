@@ -63,7 +63,7 @@ var NenpyoTHead = React.createClass({
       }
       if (num > 1) {
         rmvtag = (
-                  <button className="btn btn-default" type="button" id={"btnRemove"+(cnt-1)} onClick={onrmvcol.bind(this,cnt-1)}>
+                  <button className="btn btn-default" type="button" id={"btnRemove"+(cnt-1)} onClick={onrmvcol.bind(null,cnt-1)}>
                     <span className="glyphicon glyphicon-remove" />
                   </button>
                     );
@@ -117,7 +117,7 @@ var Nenpyo = React.createClass({
   getInitialState: function() {
     return {tags: [{tag:"",key:new Date().getTime()}]};
   },
-  handleAddCol : function() {
+  handleAddCol : function(e) {
     if (this.state.tags.length < 3) {
       this.state.tags.push({tag:"",key: new Date().getTime()});
       this.setState({tags : this.state.tags});
