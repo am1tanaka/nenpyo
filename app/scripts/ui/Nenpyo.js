@@ -10,6 +10,89 @@ var React = require('react');
 
 // 内容の出力。desc、source、タグをまとめて出力
 
+var NenpyoColgroup = React.createClass({
+  render : function()  {
+    var num = (this.props.tags.length <= 1) ? "col-xs-10" :
+      (this.props.tags.length == 2) ? "col-xs-5" : "col-xs-3";
+    var cols = this.props.tags.map(function(data) {
+      return <col className={num} />;
+    });
+
+    // タグが1列
+    return (
+      <colgroup>
+        <col className="col-xs-1" />
+        <col className="col-xs-1" />
+        {cols}
+      </colgroup>
+    );
+  }
+});
+
+var NenpyoAddTagButton = React.createClass({
+  render : function() {
+    return  <button
+                id={"btnAddTag"}
+                className="btn btn-default col-xs-1"
+                data-toggle="tooltip"
+                data-placement="bottom"
+                title="列追加">
+              <span className="glyphicon glyphicon-plus" />
+            </button>;
+  }
+});
+
+/** 年表の見出しを出力する*/
+var NenpyoTHead = React.createClass({
+  render : function() {
+    var cnt = 0;
+    var num = this.props.tags.length;
+    var body = this.props.tags.map(function (data) {
+      var addtag = "";
+      var grid = "col-xs-12";
+      cnt++;
+      if ((num < 3) && (cnt == num)) {
+          addtag =<NenpyoAddTagButton />
+          grid = "col-xs-10";
+      }
+
+      return (
+        <th>
+          <form>
+            <span className={grid}>
+              <div className="input-group">
+                <input
+                  type="text"
+                  placeholder="タグ"
+                  className="form-control"
+                  defaultValue={data}
+                  id={"tagtext"+(cnt-1)} />
+                <span className="input-group-btn">
+                  <button className="btn btn-default" type="button" id={"btnErace"+(cnt-1)}>
+                    <span className="glyphicon glyphicon-remove-circle" />
+                  </button>
+                  <button className="btn btn-default" type="button" id={"btnRemove"+(cnt-1)}>
+                    <span className="glyphicon glyphicon-remove" />
+                  </button>
+                </span>
+              </div>
+            </span>
+            {addtag}
+          </form>
+        </th>
+      );
+    });
+
+    return (
+          <thead>
+            <tr><th className="text-center text-nowrap">西暦 (和暦)</th>
+              <th className="text-center text-nowrap">月日</th>
+                {body}
+            </tr>
+          </thead>);
+  }
+});
+
 /**
  * 年表ブロックを作成する。
  * tag stateの要素がない場合は、すべてのデータを出力。
@@ -19,7 +102,12 @@ var React = require('react');
  */
 var Nenpyo = React.createClass({
   getInitialState: function() {
-    return {tag: []};
+    return {tags: ["abc","abcd"]};
+  },
+  addTag : function(tag) {
+    if (this.state.tags.length < 2) {
+      this.state.tags.push(tag);
+    }
   },
   convYear: function(ad,mon,dy) {
     mon = mon || 12;  // 省略時は最終日にする
@@ -63,40 +151,11 @@ var Nenpyo = React.createClass({
     }
   },
   render: function() {
-    var tableNodes = this.props.data.map(function (row) {
-      var wa = this.convYear(row.year,row.month,row.day);
-      var mondy = "-";
-      if (row.month) {
-        mondy = row.month+"月";
-        if (row.day) {
-          mondy += row.day+"日";
-        }
-      }
-      return (
-        <tr>
-          <td className="text-nowrap">{row.year} ({wa})</td>
-          <td className="text-right text-nowrap">{mondy}</td>
-          <td>{row.desc}</td>
-        </tr>
-      );
-    },this);
     return (
       <div>
         <table className="table table-striped table-bordered">
-          <colgroup>
-            <col className="col-xs-1" />
-            <col className="col-xs-1" />
-            <col className="col-xs-10" />
-          </colgroup>
-          <thead>
-            <tr><th className="text-center">西暦 (和暦)</th>
-              <th className="text-center">月日</th>
-              <th className="text-center">内容</th>
-            </tr>
-          </thead>
-          <tbody>
-            {tableNodes}
-          </tbody>
+          <NenpyoColgroup tags={this.state.tags} />
+          <NenpyoTHead tags={this.state.tags} />
         </table>
       </div>
     );
