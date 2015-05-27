@@ -62,6 +62,7 @@ var NenpyoTHead = React.createClass({
           grid = "col-xs-10";
       }
       if (num > 1) {
+        // propsからイベントに対してbindをする場合は、nullを渡す
         rmvtag = (
                   <button className="btn btn-default" type="button" id={"btnRemove"+(cnt-1)} onClick={onrmvcol.bind(null,cnt-1)}>
                     <span className="glyphicon glyphicon-remove" />
