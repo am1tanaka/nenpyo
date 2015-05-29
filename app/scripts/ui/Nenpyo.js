@@ -52,6 +52,8 @@ var NenpyoTHead = React.createClass({
     var num = this.props.tags.length;
     var onaddcol = this.props.onaddcol;
     var onrmvcol = this.props.onremovecol;
+    var onchgtag = this.props.onchangetag;
+    var onclrtag = this.props.oncleartag;
     var body = this.props.tags.map(function (data) {
       var addtag = "";
       var grid = "col-xs-12";
@@ -62,9 +64,12 @@ var NenpyoTHead = React.createClass({
           grid = "col-xs-10";
       }
       if (num > 1) {
-        // propsからイベントに対してbindをする場合は、nullを渡す
         rmvtag = (
-                  <button className="btn btn-default" type="button" id={"btnRemove"+(cnt-1)} onClick={onrmvcol.bind(null,cnt-1)}>
+                  <button
+                    className="btn btn-default"
+                    type="button"
+                    data-index={cnt-1}
+                    onClick={onrmvcol} >
                     <span className="glyphicon glyphicon-remove" />
                   </button>
                     );
@@ -79,12 +84,17 @@ var NenpyoTHead = React.createClass({
                   type="text"
                   placeholder="タグ"
                   className="form-control"
-                  defaultValue={data.tag}
-                  id={"tagtext"+(cnt-1)}
+                  value={data.tag}
+                  data-index={cnt-1}
                   key={"text"+data.key}
+                  onChange={onchgtag}
                 />
                 <span className="input-group-btn">
-                  <button className="btn btn-default" type="button" id={"btnErace"+(cnt-1)}>
+                  <button
+                    className="btn btn-default"
+                    type="button"
+                    onClick={onclrtag}
+                    data-index={cnt-1}>
                     <span className="glyphicon glyphicon-remove-circle" />
                   </button>
                   {rmvtag}
@@ -126,7 +136,17 @@ var Nenpyo = React.createClass({
   },
   handleRemoveCol : function(e) {
     var newtags = this.state.tags;
-    newtags.splice(e,1);
+    newtags.splice(e.target.getAttribute("data-index"),1);
+    this.setState({tags : newtags});
+  },
+  handleChangeTag : function(e) {
+    var newtags = this.state.tags;
+    newtags[e.target.getAttribute("data-index")].tag = e.target.value;
+    this.setState({tags : newtags});
+  },
+  handleClearTag : function(e) {
+    var newtags = this.state.tags;
+    newtags[e.target.getAttribute("data-index")].tag = "";
     this.setState({tags : newtags});
   },
   convYear: function(ad,mon,dy) {
@@ -178,7 +198,10 @@ var Nenpyo = React.createClass({
           <NenpyoTHead
             tags={this.state.tags}
             onaddcol={this.handleAddCol}
-            onremovecol={this.handleRemoveCol} />
+            onremovecol={this.handleRemoveCol}
+            onchangetag={this.handleChangeTag}
+            oncleartag={this.handleClearTag}
+            />
         </table>
       </div>
     );
