@@ -120,13 +120,14 @@ var Nenpyo = React.createClass({
   },
   handleAddCol : function(e) {
     if (this.state.tags.length < 3) {
-      this.state.tags.push({tag:"",key: new Date().getTime()});
-      this.setState({tags : this.state.tags});
+      var newtags = this.state.tags.concat({tag:"",key: new Date().getTime()});
+      this.setState({tags : newtags});
     }
   },
   handleRemoveCol : function(e) {
-    this.state.tags.splice(e,1);
-    this.setState({tags : this.state.tags});
+    var newtags = this.state.tags;
+    newtags.splice(e,1);
+    this.setState({tags : newtags});
   },
   convYear: function(ad,mon,dy) {
     mon = mon || 12;  // 省略時は最終日にする
