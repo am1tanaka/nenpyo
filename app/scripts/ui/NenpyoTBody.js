@@ -19,13 +19,11 @@ var matchTag = function(datatag, tagline) {
   // タグが未指定の場合は全てにマッチ
   tgs = tagline.trim();
   if (tgs.length == 0) {
-    console.log("1");
     return true;
   }
 
   // もとデータにタグがない場合はヒットさせない
   if (!datatag) {
-    console.log("2");
     return false;
   }
 
@@ -34,22 +32,19 @@ var matchTag = function(datatag, tagline) {
     for (j=0 ; j<datatag.length ; j++) {
       // タグがヒットしたら残す
       if (tglist[i] === datatag[j]) {
-        console.log("3");
         return true;
       }
     }
   }
-  console.log("4");
   return false;
 }
 
-
 /**
- * 与えられたデータの日付に従って、年月日の列を出力する
- * @param data １つ分のデータ
- * @returns {HTML} [[Description]]
+ * 年表の年度の欄を出力する
+ * @param   {[[Type]]} data 1つ分のデータ
+ *                          @returns {HTML}     <td>で西暦と和暦を囲んだReactエレメントを返す
  */
-var NenpyoDate = React.createClass({
+var NenpyoYear = React.createClass({
   convYear: function(ad,mon,dy) {
     mon = mon || 12;  // 省略時は最終日にする
     dy  = dy || 31;
@@ -94,6 +89,20 @@ var NenpyoDate = React.createClass({
   render : function() {
     var dt = this.props.data;
     var wa = this.convYear(dt.year,dt.month,dt.day);
+    return (
+      <td className="text-nowrap">{dt.year} ({wa})</td>
+    );
+  }
+});
+
+/**
+ * 与えられたデータの日付に従って月日の列を出力する
+ * @param data １つ分のデータ
+ * @returns {HTML} 月と日をtdタグで囲んだReactエレメントを返す
+ */
+var NenpyoMonthDay = React.createClass({
+  render : function() {
+    var dt = this.props.data;
 
     // 日付の設定
     var mondy = "-";
@@ -104,12 +113,7 @@ var NenpyoDate = React.createClass({
       }
     }
 
-    return (
-      <div>
-          <td className="text-nowrap">{dt.year} ({wa})</td>
-          <td className="text-right text-nowrap">{mondy}</td>
-          </div>
-    );
+    return <td className="text-right text-nowrap">{mondy}</td>;
   }
 });
 
@@ -141,35 +145,56 @@ var NenpyoTBodyCols = React.createClass({
 });
 
 /**
- * 与えられたデータから、年表を作成するループを作成して、行を構築していく
- * @returns {HTML} 作成したReactタグ
- */
-var NenpyoTBodyBlock = React.createClass({
-  render:function() {
-    var tags = this.props.tags;
-
-    // データをループ
-    var tbody = this.props.data.map(function(data) {
-      var key = data.year+""+data.month+""+data.day+data.desc;
-
-      return <tr key={key}>
-          <NenpyoDate data={data} />
-          <NenpyoTBodyCols data={data} tags={tags} />
-      </tr>;
-    });
-
-    //return (<div>{tbody}</div>);
-    return <tr><td>test</td></tr>;
-  }
-});
-
-/**
  * 年表本体を描画する
  * @param   {[[Type]]} data 年表のデータ
  *                          @param {} tags Nenpyoのthis.state.tags
  *                          @returns {HTML}     作成したReactタグを返す
  */
 var NenpyoTBody = React.createClass({
+  makeNenpyoCols : function(nenpyo, tags) {
+    var cnt = 0;
+
+    // 列ループ
+    var line = tags.map(function(tag) {
+      var key = "td"+nenpyo.year+""+nenpyo.month+""+nenpyo.day+nenpyo.desc+""+cnt;
+      cnt++;
+      if (matchTag(nenpyo.tag,tag.tag)) {
+        return <td key={key}>{nenpyo.desc}</td>;
+      }
+      else {
+        return <td key={key}>-</td>;
+      }
+    });
+
+    return line;
+  },
+
+  /**
+   * フィルタ済みのデータをループさせて、タグに応じて行を作成して返す
+   * @param data フィルタリング済みの年表データ配列
+   * @param tags Nenpyo.state.tags
+   * @return テーブルの行を表すReactエレメント
+   */
+  makeBody : function(data, tags) {
+    var makeDate = this.makeDate;
+    var makeNenpyoCols = this.makeNenpyoCols;
+    // データをループ
+    var tbody = data.map(function(data) {
+      var key = data.year+""+data.month+""+data.day+data.desc;
+      var bodycols = makeNenpyoCols(data, tags);
+
+      return (
+        <tr key={key}>
+          <NenpyoYear data={data} />
+          <NenpyoMonthDay data={data} />
+          {bodycols}
+        </tr>
+      );
+    });
+
+    return tbody;
+  },
+
   render : function() {
     var tags = this.props.tags;
 
@@ -181,12 +206,12 @@ var NenpyoTBody = React.createClass({
       return false;
     });
 
-    console.log("datas="+this.props.data.length+"/filtered="+filtered.length);
+    var body = this.makeBody(filtered, this.props.tags);
 
     // 本体部を返す
     return (
       <tbody>
-        <NenpyoTBodyBlock data={filtered} tags={this.props.tags} />
+        {body}
       </tbody>
     );
   }
