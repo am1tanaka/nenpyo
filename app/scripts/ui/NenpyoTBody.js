@@ -118,39 +118,18 @@ var NenpyoMonthDay = React.createClass({
 });
 
 /**
- * 年表の列を出力する
- * @param this.props.data １つ分のデータ
- * @param this.props.tags Nenpyo.state.tags
- * @returns {HTML} 作成したReactElementを返す
- */
-var NenpyoTBodyCols = React.createClass({
-  render : function() {
-    var nenpyo = this.props.data;
-    var cnt = 0;
-
-    // 列ループ
-    var line = this.props.tags.map(function(tag) {
-      var key = "td"+nenpyo.year+""+nenpyo.month+""+nenpyo.day+nenpyo.desc+""+cnt;
-      cnt++;
-      if (matchTag(nenpyo.tag,tag.tag)) {
-        return <td key={key}>{nenpyo.desc}</td>;
-      }
-      else {
-        return <td key={key}>-</td>;
-      }
-    });
-
-    return <div>{line}</div>;
-  }
-});
-
-/**
  * 年表本体を描画する
  * @param   {[[Type]]} data 年表のデータ
  *                          @param {} tags Nenpyoのthis.state.tags
  *                          @returns {HTML}     作成したReactタグを返す
  */
 var NenpyoTBody = React.createClass({
+  /**
+   * 年表の列を生成されている列数分、生成して部分Reactエレメントを返す
+   * @param nenpyo １つ分の年表データ
+   * @param tags Nenpyo.state.tags
+   * @return 列数分の年表データReact部分エレメント
+   */
   makeNenpyoCols : function(nenpyo, tags) {
     var cnt = 0;
 
