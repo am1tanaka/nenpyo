@@ -5,6 +5,7 @@
  */
 
 var React = require('react');
+var NenpyoTBody = require('./NenpyoTBody');
 
 // 年月日のパーツを出力
 
@@ -117,6 +118,8 @@ var NenpyoTHead = React.createClass({
   }
 });
 
+
+
 /**
  * 年表ブロックを作成する。
  * tag stateの要素がない場合は、すべてのデータを出力。
@@ -149,47 +152,6 @@ var Nenpyo = React.createClass({
     newtags[e.target.getAttribute("data-index")].tag = "";
     this.setState({tags : newtags});
   },
-  convYear: function(ad,mon,dy) {
-    mon = mon || 12;  // 省略時は最終日にする
-    dy  = dy || 31;
-
-    // 平成(1989/1/8以降)
-    if (  (ad > 1989)
-        ||  (   (ad === 1989)
-            &&  (   (mon > 1)
-                 || (dy >= 8))))
-    {
-      return "平成"+(ad-1988)+"年";
-    }
-    // 昭和(1926/12/25以降)
-    else if (   (ad > 1926)
-             || (   (ad === 1926)
-                 && (mon === 12)
-                 && (dy >= 25))) {
-      return "昭和"+(ad-1925)+"年";
-    }
-    // 大正(1912/7/30以降)
-    else if (   (ad > 1912)
-             || (   (ad === 1912)
-                 && (mon > 7)
-                 || (   (mon === 7)
-                     && (dy >= 30)))) {
-      return "大正"+(ad-1911)+"年";
-    }
-    // 明治(1868/9/8以降)
-    else if (   (ad > 1868)
-             || (   (ad === 1868)
-                 && (   (mon > 9)
-                     || (   (mon === 9)
-                         && (dy >= 8)))))
-    {
-      return "明治"+(ad-1867)+"年";
-    }
-    // それ以前
-    else {
-      return "-";
-    }
-  },
   render: function() {
     return (
       <div>
@@ -202,6 +164,7 @@ var Nenpyo = React.createClass({
             onchangetag={this.handleChangeTag}
             oncleartag={this.handleClearTag}
             />
+          <NenpyoTBody data={this.props.data} tags={this.state.tags} />
         </table>
       </div>
     );

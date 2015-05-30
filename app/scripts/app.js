@@ -5,7 +5,7 @@
 var React = window.React = require('react'),
     Timer = require("./ui/Timer"),
     Header = require("./ui/Header"),
-    Nenpyo = require("./ui/Nenpyo.js"),
+    Nenpyo = require("./ui/Nenpyo"),
     mountNode = document.getElementById("app"),
     headerNode = document.getElementById("header"),
     nenpyoNode = document.getElementById("nenpyo");
