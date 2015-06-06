@@ -6,9 +6,12 @@ var React = window.React = require('react'),
     Timer = require("./ui/Timer"),
     Header = require("./ui/Header"),
     Nenpyo = require("./ui/Nenpyo"),
+    InputField = require("./ui/InputField"),
     mountNode = document.getElementById("app"),
     headerNode = document.getElementById("header"),
-    nenpyoNode = document.getElementById("nenpyo");
+    nenpyoNode = document.getElementById("nenpyo"),
+    inputFieldNode = document.getElementById("inputfield");
+
 
 var TodoList = React.createClass({
   render: function() {
@@ -196,6 +199,7 @@ var nenpyodata= [
   ];
 
 React.render(<Header />,headerNode);
+React.render(<InputField />,inputFieldNode);
 React.render(<Nenpyo data={nenpyodata} />,nenpyoNode);
 React.render(<TodoApp />, mountNode);
 
