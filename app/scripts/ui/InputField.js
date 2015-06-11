@@ -16,7 +16,7 @@ var InputField = React.createClass({
    * @returns {Object} 状態
    */
   getInitialState: function() {
-    return {enabled: true};
+    return {enabled: false};
   },
   /** 有効、無効を切り替える
    * @param bool flag
@@ -25,6 +25,11 @@ var InputField = React.createClass({
     this.state.enabled = !!flag;
   },
   render: function() {
+    if (!this.state.enabled)
+    {
+      return <div></div>;
+    }
+
     return (
       <div className="panel panel-default">
         <div className="panel-heading">
