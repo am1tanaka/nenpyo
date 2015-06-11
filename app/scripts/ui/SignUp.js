@@ -98,7 +98,7 @@ var SignUp = React.createClass({
             </div>
 
             <div className="form-group">
-              <div className="col-sm-offset-1 col-sm-11">
+              <div className="col-sm-offset-2 col-sm-10">
                 <div className="col-sm-3">
                   <button type="submit" id="btnEntry" className="btn btn-primary form-control"
                     title="ユーザー登録" data-placement="bottom" data-toggle="tooltip">
