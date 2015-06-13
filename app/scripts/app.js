@@ -8,11 +8,13 @@ var React = window.React = require('react'),
     Nenpyo = require("./ui/Nenpyo"),
     InputField = require("./ui/InputField"),
     SignUp = require("./ui/SignUp"),
+    SignIn = require("./ui/SignIn"),
     mountNode = document.getElementById("app"),
     headerNode = document.getElementById("header"),
     nenpyoNode = document.getElementById("nenpyo"),
     inputFieldNode = document.getElementById("inputfield"),
-    signUpNode = document.getElementById("signup");
+    signUpNode = document.getElementById("signup"),
+    signInNode = document.getElementById("signin");
 
 
 var TodoList = React.createClass({
@@ -203,6 +205,7 @@ var nenpyodata= [
 React.render(<Header />,headerNode);
 React.render(<InputField />,inputFieldNode);
 React.render(<SignUp />,signUpNode);
+React.render(<SignIn />,signInNode);
 React.render(<Nenpyo data={nenpyodata} />,nenpyoNode);
 React.render(<TodoApp />, mountNode);
 
