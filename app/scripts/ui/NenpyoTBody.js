@@ -125,6 +125,41 @@ var NenpyoMonthDay = React.createClass({
  */
 var NenpyoTBody = React.createClass({
   /**
+   * 年表の説明文章を作成する。出典やコメントなどを合成する
+   * @param nenpyo 表示させたい年表の１つ分のデータ
+   */
+  makeNenpyoDesc : function(nenpyo) {
+    var desc = nenpyo.desc;
+    var srcdesc = "";
+    var src = "";
+    var hd = nenpyo.desc;
+    var ft = "";
+
+    // 出典があるか
+    if (nenpyo.source) {
+      hd=hd+" (出典：";
+      ft = ")";
+
+      // 出典(desc)があって、リンクもある(descがリンク)
+      // リンクのみ(リンクURLを表示してリンク)
+      if (nenpyo.source.link) {
+        srcdesc = nenpyo.source.link;
+        // 出典があるときは、表示を説明に変更
+        if (nenpyo.source.desc) {
+          srcdesc = nenpyo.source.desc;
+        }
+        return <div>{hd}<a href={nenpyo.source.link} target='_blank'>{srcdesc}</a>{ft}</div>;
+      }
+      else {
+        // 説明(desc)があって、リンクがない(descを表示してリンクなし)
+        src = nenpyo.source.desc;
+      }
+    }
+
+    return hd+src+ft;
+  },
+
+  /**
    * 年表の列を生成されている列数分、生成して部分Reactエレメントを返す
    * @param nenpyo １つ分の年表データ
    * @param tags Nenpyo.state.tags
@@ -132,13 +167,14 @@ var NenpyoTBody = React.createClass({
    */
   makeNenpyoCols : function(nenpyo, tags) {
     var cnt = 0;
+    var mkdesc = this.makeNenpyoDesc;
 
     // 列ループ
     var line = tags.map(function(tag) {
       var key = "td"+nenpyo.year+""+nenpyo.month+""+nenpyo.day+nenpyo.desc+""+cnt;
       cnt++;
       if (matchTag(nenpyo.tag,tag.tag)) {
-        return <td key={key}>{nenpyo.desc}</td>;
+        return <td key={key}>{mkdesc(nenpyo)}</td>;
       }
       else {
         return <td key={key}>-</td>;
