@@ -58,7 +58,7 @@ var nenpyodata= [
       "year":1868,
       "month":1,
       "day":1,
-      "desc":"明治以前元日"
+      "desc":"明治以前元日",
     },
     {
       "year":1868,

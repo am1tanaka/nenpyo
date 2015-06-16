@@ -32,7 +32,7 @@ var HeaderButton = React.createClass({
    var icon = "glyphicon "+this.props.icon;
    return (
       <li data-toggle="tooltip" data-placement="bottom" title={this.props.children}>
-          <a href="#">
+          <a href="#" onClick={this.props.onClick}>
               <span className={icon} aria-hidden="true"></span>
               <span className="hidden-xs hidden-sm">{this.props.children}</span>
           </a>
@@ -63,6 +63,18 @@ var HeaderBlock = React.createClass({
  * @returns {HTML} ヘッダのReactオブジェクトを返す
  */
 var Header = React.createClass({
+  handleCSV: function() {
+    alert("表示している年表をCSVファイルに出力する予定です。");
+  },
+  handleImport: function() {
+    alert("CSVファイルやWordファイルから年表をインポートする予定です。");
+  },
+  handleUserSetting:function() {
+    alert("ユーザー設定画面を呼び出す予定です。");
+  },
+  handleSignOut:function() {
+    alert("サインアウトする予定です。");
+  },
   render: function() {
     return (
       <div>
@@ -70,13 +82,13 @@ var Header = React.createClass({
           <HeaderBlock addclass="pull-left">
             <HeaderText>多摩NT年表</HeaderText>
             <HeaderButton icon="glyphicon-plus">年表追加</HeaderButton>
-            <HeaderButton icon="glyphicon-download">CSV取得</HeaderButton>
-            <HeaderButton icon="glyphicon-upload">インポート</HeaderButton>
+            <HeaderButton icon="glyphicon-download" onClick={this.handleCSV}>CSV取得</HeaderButton>
+            <HeaderButton icon="glyphicon-upload" onClick={this.handleImport}>インポート</HeaderButton>
           </HeaderBlock>
           <HeaderBlock addclass="pull-right">
             <HeaderText>Username</HeaderText>
-            <HeaderButton icon="glyphicon-cog">Settings</HeaderButton>
-            <HeaderButton icon="glyphicon-log-out">Sign Out</HeaderButton>
+            <HeaderButton icon="glyphicon-cog" onClick={this.handleUserSetting}>Settings</HeaderButton>
+            <HeaderButton icon="glyphicon-log-out" onClick={this.handleSignOut}>Sign Out</HeaderButton>
           </HeaderBlock>
           <HeaderBlock addclass="pull-right hidden">
             <HeaderButton icon="glyphicon-hand-up">Sign Up</HeaderButton>
