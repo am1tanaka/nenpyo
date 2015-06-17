@@ -11,21 +11,8 @@ var React = require('react');
  * @returns {HTML} ヘッダのReactオブジェクトを返す
  */
 var InputField = React.createClass({
-  /**
-   * ステータスの準備
-   * @returns {Object} 状態
-   */
-  getInitialState: function() {
-    return {enabled: false};
-  },
-  /** 有効、無効を切り替える
-   * @param bool flag
-  */
-  setEnabled : function(flag) {
-    this.state.enabled = !!flag;
-  },
   render: function() {
-    if (!this.state.enabled)
+    if (!this.props.dispInput)
     {
       return <div></div>;
     }
@@ -37,7 +24,7 @@ var InputField = React.createClass({
           年表の新規入力&nbsp;&nbsp;
           <button id="btnCloseInputField" className="btn btn-default"
             title="入力欄を閉じる" data-placement="bottom" data-toggle="tooltip"
-            type="button">
+            type="button" onClick={this.props.handleCloseInput}>
               <span className="glyphicon glyphicon-remove" />閉じる
           </button>
           </div>
@@ -109,7 +96,7 @@ var InputField = React.createClass({
                 <div className="col-sm-2">
                   <button id="btnCloseInputField" className="btn btn-default form-control"
                     title="入力欄を閉じる" data-placement="bottom" data-toggle="tooltip"
-                    type="button">
+                    type="button" onClick={this.props.handleCloseInput}>
                       <span className="glyphicon glyphicon-remove" />閉じる
                   </button>
                 </div>

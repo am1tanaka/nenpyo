@@ -84,7 +84,7 @@ var Header = React.createClass({
           <nav className="navbar navbar-default navbar-fixed-top container-fluid">
             <HeaderBlock addclass="pull-left">
               <HeaderText>多摩NT年表</HeaderText>
-              <HeaderButton icon="glyphicon-plus" key="nenpyo">年表追加</HeaderButton>
+              <HeaderButton icon="glyphicon-plus" key="nenpyo" onClick={this.props.handleOpenInput}>年表追加</HeaderButton>
               <HeaderButton icon="glyphicon-download" key="csv" onClick={this.handleCSV}>CSV取得</HeaderButton>
               <HeaderButton icon="glyphicon-upload" key="import" onClick={this.handleImport}>インポート</HeaderButton>
             </HeaderBlock>

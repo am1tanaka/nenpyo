@@ -6,7 +6,8 @@
 
 var React = require('react');
 var NenpyoTBody = require('./NenpyoTBody'),
-    Header = require("./Header");
+    Header = require("./Header"),
+    InputField = require("./InputField");
 
 // 年月日のパーツを出力
 
@@ -172,11 +173,22 @@ var Nenpyo = React.createClass({
     // TODO: サインアウト処理
     this.setState({permission: "none"});
   },
+  handleOpenInput: function() {
+    this.setState({dispInput: true});
+  },
+  handleCloseInput: function() {
+    this.setState({dispInput: false});
+  },
   render: function() {
 
     return (
       <div>
-        <Header permission={this.state.permission} doSignIn={this.doSignIn} handleSignOut={this.handleSignOut} />
+        <Header
+          permission={this.state.permission}
+          doSignIn={this.doSignIn}
+          handleSignOut={this.handleSignOut}
+          handleOpenInput={this.handleOpenInput} />
+        <InputField dispInput={this.state.dispInput} handleCloseInput={this.handleCloseInput} />
         <table className="table table-striped table-bordered">
           <NenpyoColgroup tags={this.state.tags} />
           <NenpyoTHead

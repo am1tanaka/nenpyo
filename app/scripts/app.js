@@ -4,15 +4,11 @@
  */
 var React = window.React = require('react'),
     Timer = require("./ui/Timer"),
-    Header = require("./ui/Header"),
     Nenpyo = require("./ui/Nenpyo"),
-    InputField = require("./ui/InputField"),
     SignUp = require("./ui/SignUp"),
     SignIn = require("./ui/SignIn"),
     mountNode = document.getElementById("app"),
-    headerNode = document.getElementById("header"),
     nenpyoNode = document.getElementById("nenpyo"),
-    inputFieldNode = document.getElementById("inputfield"),
     signUpNode = document.getElementById("signup"),
     signInNode = document.getElementById("signin");
 
@@ -202,8 +198,6 @@ var nenpyodata= [
     }
   ];
 
-React.render(<Header />,headerNode);
-React.render(<InputField />,inputFieldNode);
 React.render(<SignUp />,signUpNode);
 React.render(<SignIn />,signInNode);
 React.render(<Nenpyo data={nenpyodata} />,nenpyoNode);
