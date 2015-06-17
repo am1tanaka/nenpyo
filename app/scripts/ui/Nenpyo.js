@@ -5,7 +5,8 @@
  */
 
 var React = require('react');
-var NenpyoTBody = require('./NenpyoTBody');
+var NenpyoTBody = require('./NenpyoTBody'),
+    Header = require("./Header");
 
 // 年月日のパーツを出力
 
@@ -129,7 +130,18 @@ var NenpyoTHead = React.createClass({
  */
 var Nenpyo = React.createClass({
   getInitialState: function() {
-    return {tags: [{tag:"",key:new Date().getTime()}]};
+    return {
+      // 現在選択されているタグのリスト。最大3つ
+      tags: [{tag:"",key:new Date().getTime()}],
+      // 現在のシーンのデータ
+      nowScene: {},
+      // 次に切り替えたいシーンデータ
+      nextScene: {},
+      // 権限
+      permission : "none",
+      // 年表入力フォームの表示
+      dispInput : false
+    };
   },
   handleAddCol : function(e) {
     if (this.state.tags.length < 3) {
@@ -152,9 +164,19 @@ var Nenpyo = React.createClass({
     newtags[e.target.getAttribute("data-index")].tag = "";
     this.setState({tags : newtags});
   },
+  doSignIn: function() {
+    // TODO: サインイン処理
+    this.setState({permission: "user"});
+  },
+  handleSignOut : function() {
+    // TODO: サインアウト処理
+    this.setState({permission: "none"});
+  },
   render: function() {
+
     return (
       <div>
+        <Header permission={this.state.permission} doSignIn={this.doSignIn} handleSignOut={this.handleSignOut} />
         <table className="table table-striped table-bordered">
           <NenpyoColgroup tags={this.state.tags} />
           <NenpyoTHead

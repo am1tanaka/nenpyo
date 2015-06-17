@@ -60,10 +60,11 @@ var HeaderBlock = React.createClass({
 
 /**
  * ヘッダコンテナ
+ * permission string none=サインインしていない / user=ユーザーモード / admin=管理者モード
  * @returns {HTML} ヘッダのReactオブジェクトを返す
  */
 var Header = React.createClass({
-  handleCSV: function() {
+  handleCSV: function(e) {
     alert("表示している年表をCSVファイルに出力する予定です。");
   },
   handleImport: function() {
@@ -72,27 +73,41 @@ var Header = React.createClass({
   handleUserSetting:function() {
     alert("ユーザー設定画面を呼び出す予定です。");
   },
-  handleSignOut:function() {
-    alert("サインアウトする予定です。");
-  },
   render: function() {
+    if (this.props.permission == "admin") {
+      // 管理者モード
+    }
+    else if (this.props.permission == "user") {
+      // ユーザーモード
+      return (
+        <div>
+          <nav className="navbar navbar-default navbar-fixed-top container-fluid">
+            <HeaderBlock addclass="pull-left">
+              <HeaderText>多摩NT年表</HeaderText>
+              <HeaderButton icon="glyphicon-plus" key="nenpyo">年表追加</HeaderButton>
+              <HeaderButton icon="glyphicon-download" key="csv" onClick={this.handleCSV}>CSV取得</HeaderButton>
+              <HeaderButton icon="glyphicon-upload" key="import" onClick={this.handleImport}>インポート</HeaderButton>
+            </HeaderBlock>
+            <HeaderBlock addclass="pull-right">
+              <HeaderText>Username</HeaderText>
+              <HeaderButton icon="glyphicon-cog" key="setting" onClick={this.handleUserSetting}>Settings</HeaderButton>
+              <HeaderButton icon="glyphicon-log-out" key="signout" onClick={this.props.handleSignOut}>Sign Out</HeaderButton>
+            </HeaderBlock>
+          </nav>
+        </div>
+      );
+    }
+
+    // 権限なし時のトップ
     return (
       <div>
         <nav className="navbar navbar-default navbar-fixed-top container-fluid">
           <HeaderBlock addclass="pull-left">
             <HeaderText>多摩NT年表</HeaderText>
-            <HeaderButton icon="glyphicon-plus">年表追加</HeaderButton>
-            <HeaderButton icon="glyphicon-download" onClick={this.handleCSV}>CSV取得</HeaderButton>
-            <HeaderButton icon="glyphicon-upload" onClick={this.handleImport}>インポート</HeaderButton>
           </HeaderBlock>
           <HeaderBlock addclass="pull-right">
-            <HeaderText>Username</HeaderText>
-            <HeaderButton icon="glyphicon-cog" onClick={this.handleUserSetting}>Settings</HeaderButton>
-            <HeaderButton icon="glyphicon-log-out" onClick={this.handleSignOut}>Sign Out</HeaderButton>
-          </HeaderBlock>
-          <HeaderBlock addclass="pull-right hidden">
-            <HeaderButton icon="glyphicon-hand-up">Sign Up</HeaderButton>
-            <HeaderButton icon="glyphicon-log-in">Sign In</HeaderButton>
+            <HeaderButton icon="glyphicon-hand-up" key="signup">Sign Up</HeaderButton>
+            <HeaderButton icon="glyphicon-log-in" key="signin" onClick={this.props.doSignIn}>Sign In</HeaderButton>
           </HeaderBlock>
         </nav>
       </div>
