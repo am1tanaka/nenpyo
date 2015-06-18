@@ -25,9 +25,28 @@ var ConfirmModal = React.createClass({
     }
 
     // モーダルを表示
-    return <div>modal</div>
+    return (
+        <div className="modal-dialog">
+          <div className="modal-content">
+            <div className="modal-header">
+              <button type="button" className="close" aria-label="Close" onClick={this.props.handleClose}>
+                <span aria-hidden="true">&times;</span></button>
+                <h4 className="modal-title">{this.props.data.title}</h4>
+            </div>
+            <div className="modal-body">
+              {this.props.data.body}
+            </div>
+            <div className="modal-footer">
+              <button type="button" className="btn btn-default" onClick={this.props.handleNo} data-dismiss="modal">{this.props.data.btnNo}</button>
+              <button type="button" className="btn btn-primary" onClick={this.props.data.handleYes}>{this.props.data.btnYes}</button>
+            </div>
+          </div>
+        </div>
+    );
+
   }
 });
+
 
 module.exports = ConfirmModal;
 

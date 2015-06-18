@@ -191,8 +191,26 @@ var Nenpyo = React.createClass({
   handleCloseInput: function() {
     this.setState({dispInput: false});
   },
+  handleCloseConfirmModal: function()
+  {
+    this.setState({confirmModal: {disp: false}});
+  },
+  // 年表データを登録する
+  entryNenpyo: function() {
+    // データを登録する
+
+    // 不要なデータを削除する
+    this.setState({
+
+    });
+
+    // モーダルを閉じる
+    this.handleCloseConfirmModal();
+  },
   // 入力画面で入力ボタンを押したので、確認ウィンドウを出力する
   handleInput: function() {
+    var entryNenpyo = this.entryNenpyo;
+
     this.setState({
       confirmModal:{
         disp: true,
@@ -200,9 +218,7 @@ var Nenpyo = React.createClass({
         body: <p>データリスト</p>,
         btnYes: "登録",
         btnNo: "Cancel",
-        handleYes: function() {
-          this.setState({confirmModal: {disp:false}});
-        }
+        handleYes: entryNenpyo
       }
     });
   },
@@ -210,7 +226,7 @@ var Nenpyo = React.createClass({
 
     return (
       <div>
-        <ConfirmModal data={this.state.confirmModal} />
+        <ConfirmModal data={this.state.confirmModal} handleClose={this.handleCloseConfirmModal} />
         <Header
           permission={this.state.permission}
           doSignIn={this.doSignIn}
