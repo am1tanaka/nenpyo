@@ -8,6 +8,7 @@ var React = require('react');
 var NenpyoTBody = require('./NenpyoTBody'),
     Header = require("./Header"),
     InputField = require("./InputField"),
+    ConfirmModal = require("./ConfirmModal"),
     TestData = require("../TestData");
 
 // 年月日のパーツを出力
@@ -144,7 +145,15 @@ var Nenpyo = React.createClass({
       // 年表入力フォームの表示
       dispInput : false,
       // 年表データ
-      nenpyo: TestData
+      nenpyo: TestData,
+      // 確認ウィンドウ用クラス
+      // disp:表示の有無
+      // title：タイトル
+      // body：本文
+      // btnYes:進めるボタンに表示する文字列
+      // handleYes:進める処理
+      // btnNo:閉じるボタンに表示する文字列。省略するとCancelと表示
+      confirmModal: {disp: false}
     };
   },
   handleAddCol : function(e) {
@@ -182,16 +191,36 @@ var Nenpyo = React.createClass({
   handleCloseInput: function() {
     this.setState({dispInput: false});
   },
+  // 入力画面で入力ボタンを押したので、確認ウィンドウを出力する
+  handleInput: function() {
+    this.setState({
+      confirmModal:{
+        disp: true,
+        title: "以下の通り、登録しますか？",
+        body: <p>データリスト</p>,
+        btnYes: "登録",
+        btnNo: "Cancel",
+        handleYes: function() {
+          this.setState({confirmModal: {disp:false}});
+        }
+      }
+    });
+  },
   render: function() {
 
     return (
       <div>
+        <ConfirmModal data={this.state.confirmModal} />
         <Header
           permission={this.state.permission}
           doSignIn={this.doSignIn}
           handleSignOut={this.handleSignOut}
           handleOpenInput={this.handleOpenInput} />
-        <InputField dispInput={this.state.dispInput} handleCloseInput={this.handleCloseInput} />
+        <InputField
+          dispInput={this.state.dispInput}
+          handleCloseInput={this.handleCloseInput}
+          handleInput={this.handleInput}
+        />
         <table className="table table-striped table-bordered">
           <NenpyoColgroup tags={this.state.tags} />
           <NenpyoTHead

@@ -89,7 +89,8 @@ var InputField = React.createClass({
               <div className="col-sm-offset-1 col-sm-11">
                 <div className="col-sm-2">
                   <button type="submit" id="btnEntry" className="btn btn-primary form-control"
-                    title="入力した年表を登録する" data-placement="bottom" data-toggle="tooltip">
+                    title="入力した年表を登録する" data-placement="bottom" data-toggle="tooltip"
+                    onClick={this.props.handleInput}>
                     <span className="glyphicon glyphicon-plus" />登録
                   </button>
                 </div>
