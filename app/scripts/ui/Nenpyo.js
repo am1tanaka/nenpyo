@@ -7,7 +7,8 @@
 var React = require('react');
 var NenpyoTBody = require('./NenpyoTBody'),
     Header = require("./Header"),
-    InputField = require("./InputField");
+    InputField = require("./InputField"),
+    TestData = require("../TestData");
 
 // 年月日のパーツを出力
 
@@ -141,7 +142,9 @@ var Nenpyo = React.createClass({
       // 権限
       permission : "none",
       // 年表入力フォームの表示
-      dispInput : false
+      dispInput : false,
+      // 年表データ
+      nenpyo: TestData
     };
   },
   handleAddCol : function(e) {
@@ -198,7 +201,7 @@ var Nenpyo = React.createClass({
             onchangetag={this.handleChangeTag}
             oncleartag={this.handleClearTag}
             />
-          <NenpyoTBody data={this.props.data} tags={this.state.tags} />
+          <NenpyoTBody data={this.state.nenpyo.data} tags={this.state.tags} />
         </table>
       </div>
     );
