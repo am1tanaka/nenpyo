@@ -4,13 +4,41 @@
  * Nenpyo　入力ブロック用Reactファイル
  */
 
-var React = require('react');
+var React = require('react/addons'),
+    DropdownButton = require('react-bootstrap/lib/DropdownButton'),
+    MenuItem = require('react-bootstrap/lib/MenuItem');
 
 /**
  * ヘッダコンテナ
  * @returns {HTML} ヘッダのReactオブジェクトを返す
  */
 var InputField = React.createClass({
+    mixins: [React.addons.LinkedStateMixin],
+    getInitialState: function() {
+    return {
+      yeartype: "西暦",
+      year: "",
+      month: "",
+      day: "",
+
+    };
+  },
+  handleDropdownButton: function(e) {
+  },
+  handleChangeYearType: function(e) {
+    this.setState({yeartype: e.currentTarget.textContent});
+    //alert(e.currentTarget);
+    /*
+    var obj = e;
+    for (var nm in obj) {
+      if (    (typeof obj[nm] != 'function')
+          &&  (obj[nm] != null)
+          &&  (obj[nm] != ""))
+      {
+        alert("obj["+nm+"]="+obj[nm]);
+      }
+    }*/
+  },
   render: function() {
     if (!this.props.dispInput)
     {
@@ -32,22 +60,18 @@ var InputField = React.createClass({
         <div className="panel-body">
           <form className="form-horizontal">
             <div className="form-group">
-              <label for="dropdownDate"
+              <label
                 className="col-sm-1 control-label text-right text-nowrap">
                 日付
               </label>
               <div className="col-sm-11 form-inline">
-                <button className="btn btn-default dropdown-toggle" type="button" id="dropdownDate" data-toggle="dropdown" aria-expanded="true">
-                西暦
-                <span className="caret"></span>
-                </button>
-                <ul className="dropdown-menu" role="menu" aria-labelledby="dropdownMenu1">
-                  <li role="presentation"><a role="menuitem" tabindex="-1" href="#">西暦</a></li>
-                  <li role="presentation"><a role="menuitem" tabindex="-1" href="#">平成</a></li>
-                  <li role="presentation"><a role="menuitem" tabindex="-1" href="#">昭和</a></li>
-                  <li role="presentation"><a role="menuitem" tabindex="-1" href="#">大正</a></li>
-                  <li role="presentation"><a role="menuitem" tabindex="-1" href="#">明治</a></li>
-                </ul>
+                <DropdownButton bsStyle="default" title={this.state.yeartype} key="dropdownYearType" onSelect={this.handleDropdownButton}>
+                  <MenuItem eventKey="1" onClick={this.handleChangeYearType}>西暦</MenuItem>
+                  <MenuItem eventKey="2" onClick={this.handleChangeYearType}>平成</MenuItem>
+                  <MenuItem eventKey="3" onClick={this.handleChangeYearType}>昭和</MenuItem>
+                  <MenuItem eventKey="4" onClick={this.handleChangeYearType}>大正</MenuItem>
+                  <MenuItem eventKey="5" onClick={this.handleChangeYearType}>明治</MenuItem>
+                </DropdownButton>
                 <input type="text" className="form-control" placeholder="年" size="4" maxsize="4" />
                 <input type="text" className="form-control" placeholder="月" size="2" maxsize="2" />
                 <input type="text" className="form-control" placeholder="日" size="2" maxsize="2" />
@@ -55,7 +79,7 @@ var InputField = React.createClass({
             </div>
 
             <div className="form-group">
-              <label for="textDesc"
+              <label
                 className="col-sm-1 control-label text-right text-nowrap">
                 出来事
               </label>
@@ -65,7 +89,7 @@ var InputField = React.createClass({
             </div>
 
             <div className="form-group">
-              <label for="textSource"
+              <label
                 className="col-sm-1 control-label text-right text-nowrap">
                 出典
               </label>
@@ -76,7 +100,7 @@ var InputField = React.createClass({
             </div>
 
             <div className="form-group">
-              <label for="textTag"
+              <label
                 className="col-sm-1 control-label text-right text-nowrap">
                 タグ
               </label>
