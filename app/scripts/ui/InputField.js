@@ -4,40 +4,59 @@
  * Nenpyo　入力ブロック用Reactファイル
  */
 
-var React = require('react/addons'),
+var React = require('react'),
+    Button = require('react-bootstrap/lib/Button'),
+    ButtonInput = require('react-bootstrap/lib/ButtonInput'),
+    Col = require('react-bootstrap/lib/Col'),
     DropdownButton = require('react-bootstrap/lib/DropdownButton'),
-    MenuItem = require('react-bootstrap/lib/MenuItem');
+    Glyphicon = require('react-bootstrap/lib/Glyphicon'),
+    Input = require('react-bootstrap/lib/Input'),
+    MenuItem = require('react-bootstrap/lib/MenuItem'),
+    Panel = require('react-bootstrap/lib/Panel'),
+    Row = require('react-bootstrap/lib/Row');
 
 /**
  * ヘッダコンテナ
  * @returns {HTML} ヘッダのReactオブジェクトを返す
  */
 var InputField = React.createClass({
-    mixins: [React.addons.LinkedStateMixin],
-    getInitialState: function() {
+  // state
+  getInitialState: function() {
     return {
       yeartype: "西暦",
       year: "",
       month: "",
       day: "",
-
+      confirmYear: "",
     };
   },
-  handleDropdownButton: function(e) {
-  },
+  // 西暦、和暦をドロップダウンから選択した時の処理
   handleChangeYearType: function(e) {
     this.setState({yeartype: e.currentTarget.textContent});
-    //alert(e.currentTarget);
-    /*
-    var obj = e;
-    for (var nm in obj) {
-      if (    (typeof obj[nm] != 'function')
-          &&  (obj[nm] != null)
-          &&  (obj[nm] != ""))
-      {
-        alert("obj["+nm+"]="+obj[nm]);
-      }
-    }*/
+  },
+  // 年の整合性チェック
+  handleChangeYear: function() {
+    // 年は空白か、0〜9999
+    var newval = this.refs.inputYear.getValue();
+    if ((newval.length == 0) || ((newval-0 >=0) && (newval-0 <= 9999))) {
+      this.setState({year: newval});
+    }
+  },
+  // 月の整合性チェック
+  handleChangeMonth: function() {
+    // 月は空白か、1〜12までの値のみ有効
+    var newval = this.refs.inputMonth.getValue();
+    if ((newval.length == 0) || ((newval-0 >=1) && (newval-0 <= 12))) {
+      this.setState({month: newval});
+    }
+  },
+  // 日の整合性チェック
+  handleChangeDay: function() {
+    // 日は空白か、1〜31までの値
+    var newval = this.refs.inputDay.getValue();
+    if ((newval.length == 0) || ((newval-0 >= 1) && (newval-0 <= 31))) {
+      this.setState({day: newval});
+    }
   },
   render: function() {
     if (!this.props.dispInput)
@@ -46,6 +65,57 @@ var InputField = React.createClass({
     }
 
     return (
+      <div>
+        <Panel header={
+          <h4>年表の新規入力&nbsp;&nbsp;
+          <Button
+            title='入力欄を閉じる' data-placement="bottom" data-toggle="tooltip"
+            onClick={this.props.handleCloseInput}>
+            <Glyphicon glyph='remove' /> 閉じる
+          </Button></h4>
+          }>
+
+          <form className="form-horizontal">
+            <Input label='日付'  labelClassName='col-sm-1 text-nowrap'>
+              <Row>
+                <Col sm={1}>
+                  <DropdownButton bsStyle="default" title={this.state.yeartype} key="dropdownYearType" onSelect={function(){}}>
+                    <MenuItem eventKey="1" onClick={this.handleChangeYearType}>西暦</MenuItem>
+                    <MenuItem eventKey="2" onClick={this.handleChangeYearType}>平成</MenuItem>
+                    <MenuItem eventKey="3" onClick={this.handleChangeYearType}>昭和</MenuItem>
+                    <MenuItem eventKey="4" onClick={this.handleChangeYearType}>大正</MenuItem>
+                    <MenuItem eventKey="5" onClick={this.handleChangeYearType}>明治</MenuItem>
+                  </DropdownButton>
+                  <div>({this.state.confirmYear}/{this.state.month}/{this.state.day})</div>
+                </Col>
+                <Col sm={2}>
+                  <Input type="text" className="form-control" placeholder="年" size="4" maxsize="4"
+                    ref='inputYear'
+                    onChange={this.handleChangeYear}
+                    value={this.state.year} />
+                </Col>
+                <Col sm={2}>
+                  <Input type="text" className="form-control" placeholder="月" size="2" maxsize="2"
+                    ref='inputMonth'
+                    onChange={this.handleChangeMonth}
+                    value={this.state.month} />
+                </Col>
+                <Col sm={2}>
+                  <Input type="text" className="form-control" placeholder="日" size="2" maxsize="2"
+                    ref='inputDay'
+                    onChange={this.handleChangeDay}
+                    value={this.state.day} />
+                </Col>
+              </Row>
+
+            </Input>
+
+
+          </form>
+
+        </Panel>
+
+
       <div className="panel panel-default">
         <div className="panel-heading">
           <div className="panel-title">
@@ -58,6 +128,7 @@ var InputField = React.createClass({
           </div>
         </div>
         <div className="panel-body">
+
           <form className="form-horizontal">
             <div className="form-group">
               <label
@@ -65,16 +136,13 @@ var InputField = React.createClass({
                 日付
               </label>
               <div className="col-sm-11 form-inline">
-                <DropdownButton bsStyle="default" title={this.state.yeartype} key="dropdownYearType" onSelect={this.handleDropdownButton}>
+                <DropdownButton bsStyle="default" title={this.state.yeartype} key="dropdownYearType" onSelect={function(){}}>
                   <MenuItem eventKey="1" onClick={this.handleChangeYearType}>西暦</MenuItem>
                   <MenuItem eventKey="2" onClick={this.handleChangeYearType}>平成</MenuItem>
                   <MenuItem eventKey="3" onClick={this.handleChangeYearType}>昭和</MenuItem>
                   <MenuItem eventKey="4" onClick={this.handleChangeYearType}>大正</MenuItem>
                   <MenuItem eventKey="5" onClick={this.handleChangeYearType}>明治</MenuItem>
                 </DropdownButton>
-                <input type="text" className="form-control" placeholder="年" size="4" maxsize="4" />
-                <input type="text" className="form-control" placeholder="月" size="2" maxsize="2" />
-                <input type="text" className="form-control" placeholder="日" size="2" maxsize="2" />
               </div>
             </div>
 
@@ -130,6 +198,7 @@ var InputField = React.createClass({
           </form>
         </div>
       </div>
+                      </div>
     );
   }
 });
