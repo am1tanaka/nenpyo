@@ -9,11 +9,13 @@ var React = require('react'),
     ButtonInput = require('react-bootstrap/lib/ButtonInput'),
     Col = require('react-bootstrap/lib/Col'),
     DropdownButton = require('react-bootstrap/lib/DropdownButton'),
+    FormControls = require('react-bootstrap/lib/FormControls'),
     Glyphicon = require('react-bootstrap/lib/Glyphicon'),
     Input = require('react-bootstrap/lib/Input'),
     MenuItem = require('react-bootstrap/lib/MenuItem'),
     Panel = require('react-bootstrap/lib/Panel'),
-    Row = require('react-bootstrap/lib/Row');
+    Row = require('react-bootstrap/lib/Row'),
+    YearConverter = require('../YearConverter');
 
 /**
  * ヘッダコンテナ
@@ -26,8 +28,7 @@ var InputField = React.createClass({
       yeartype: "西暦",
       year: "",
       month: "",
-      day: "",
-      confirmYear: "",
+      day: ""
     };
   },
   // 西暦、和暦をドロップダウンから選択した時の処理
@@ -58,11 +59,32 @@ var InputField = React.createClass({
       this.setState({day: newval});
     }
   },
+  // 西暦と和暦を変換したものを表示する
+  getConvYear: function() {
+    var mon = 0;
+    var day = 0;
+    if (this.state.year.length == 0) {
+      return "-";
+    }
+
+    if (this.state.yeartype == "西暦") {
+      // 西暦＞和暦変換
+      mon = this.state.month.length == 0 ? 12 : this.state.month;
+      day = this.state.day.length == 0 ? 31 : this.state.day;
+      return YearConverter.convYear(this.state.year,mon,day);
+    }
+
+    // 和暦＞西暦変換
+    return "-";
+  },
   render: function() {
     if (!this.props.dispInput)
     {
       return <div></div>;
     }
+
+    // 和暦と西暦を確認のために変換する
+    var convYear = this.getConvYear();
 
     return (
       <div>
@@ -86,13 +108,13 @@ var InputField = React.createClass({
                     <MenuItem eventKey="4" onClick={this.handleChangeYearType}>大正</MenuItem>
                     <MenuItem eventKey="5" onClick={this.handleChangeYearType}>明治</MenuItem>
                   </DropdownButton>
-                  <div>({this.state.confirmYear}/{this.state.month}/{this.state.day})</div>
                 </Col>
                 <Col sm={2}>
                   <Input type="text" className="form-control" placeholder="年" size="4" maxsize="4"
                     ref='inputYear'
                     onChange={this.handleChangeYear}
-                    value={this.state.year} />
+                    value={this.state.year}
+                    help={convYear} />
                 </Col>
                 <Col sm={2}>
                   <Input type="text" className="form-control" placeholder="月" size="2" maxsize="2"

@@ -4,7 +4,8 @@
  * Nenpyo　年表の本体表示用Reactファイル
  */
 
-var React = require('react');
+var React = require('react'),
+    YearConverter = require('../YearConverter');
 
 /**
  * データに設定されたタグと、列のtag文字列を指定して、含まれているかを判定する
@@ -45,50 +46,9 @@ var matchTag = function(datatag, tagline) {
  *                          @returns {HTML}     <td>で西暦と和暦を囲んだReactエレメントを返す
  */
 var NenpyoYear = React.createClass({
-  convYear: function(ad,mon,dy) {
-    mon = mon || 12;  // 省略時は最終日にする
-    dy  = dy || 31;
-
-    // 平成(1989/1/8以降)
-    if (  (ad > 1989)
-        ||  (   (ad === 1989)
-            &&  (   (mon > 1)
-                 || (dy >= 8))))
-    {
-      return "平成"+(ad-1988)+"年";
-    }
-    // 昭和(1926/12/25以降)
-    else if (   (ad > 1926)
-             || (   (ad === 1926)
-                 && (mon === 12)
-                 && (dy >= 25))) {
-      return "昭和"+(ad-1925)+"年";
-    }
-    // 大正(1912/7/30以降)
-    else if (   (ad > 1912)
-             || (   (ad === 1912)
-                 && (mon > 7)
-                 || (   (mon === 7)
-                     && (dy >= 30)))) {
-      return "大正"+(ad-1911)+"年";
-    }
-    // 明治(1868/9/8以降)
-    else if (   (ad > 1868)
-             || (   (ad === 1868)
-                 && (   (mon > 9)
-                     || (   (mon === 9)
-                         && (dy >= 8)))))
-    {
-      return "明治"+(ad-1867)+"年";
-    }
-    // それ以前
-    else {
-      return "-";
-    }
-  },
   render : function() {
     var dt = this.props.data;
-    var wa = this.convYear(dt.year,dt.month,dt.day);
+    var wa = YearConverter.convYear(dt.year,dt.month,dt.day);
     return (
       <td className="text-nowrap">{dt.year} ({wa})</td>
     );
