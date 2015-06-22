@@ -89,6 +89,7 @@ var InputField = React.createClass({
 
     return (
       <div>
+
         <Panel header={
           <h4>年表の新規入力&nbsp;&nbsp;
           <Button
