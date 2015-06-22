@@ -143,7 +143,7 @@ var Nenpyo = React.createClass({
       // 権限
       permission : "none",
       // 年表入力フォームの表示
-      dispInput : false,
+      dispInput : true,
       // 年表データ
       nenpyo: TestData,
       // 確認ウィンドウ用クラス

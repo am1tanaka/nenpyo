@@ -11,6 +11,7 @@ var React = require('react'),
     DropdownButton = require('react-bootstrap/lib/DropdownButton'),
     FormControls = require('react-bootstrap/lib/FormControls'),
     Glyphicon = require('react-bootstrap/lib/Glyphicon'),
+    Grid = require('react-bootstrap/lib/Grid'),
     Input = require('react-bootstrap/lib/Input'),
     MenuItem = require('react-bootstrap/lib/MenuItem'),
     Panel = require('react-bootstrap/lib/Panel'),
@@ -98,7 +99,7 @@ var InputField = React.createClass({
           }>
 
           <form className="form-horizontal">
-            <Input label='日付'  labelClassName='col-sm-1 text-nowrap'>
+            <Input label='日付' labelClassName='col-sm-1 text-nowrap' wrapperClassName="col-sm-10">
               <Row>
                 <Col sm={1}>
                   <DropdownButton bsStyle="default" title={this.state.yeartype} key="dropdownYearType" onSelect={function(){}}>
@@ -110,117 +111,62 @@ var InputField = React.createClass({
                   </DropdownButton>
                 </Col>
                 <Col sm={2}>
-                  <Input type="text" className="form-control" placeholder="年" size="4" maxsize="4"
+                  <Input type="text" placeholder="年" size="4" maxsize="4"
                     ref='inputYear'
                     onChange={this.handleChangeYear}
                     value={this.state.year}
                     help={convYear} />
                 </Col>
                 <Col sm={2}>
-                  <Input type="text" className="form-control" placeholder="月" size="2" maxsize="2"
+                  <Input type="text" placeholder="月" size="2" maxsize="2"
                     ref='inputMonth'
                     onChange={this.handleChangeMonth}
                     value={this.state.month} />
                 </Col>
                 <Col sm={2}>
-                  <Input type="text" className="form-control" placeholder="日" size="2" maxsize="2"
+                  <Input type="text" placeholder="日" size="2" maxsize="2"
                     ref='inputDay'
                     onChange={this.handleChangeDay}
                     value={this.state.day} />
                 </Col>
               </Row>
-
             </Input>
+            <Input type="textarea" wrapperClassName="col-sm-11" placeholder="出来事" rows="2"
+              label='出来事' labelClassName='col-sm-1 text-nowrap' />
+            <Input label="出典" labelClassName='col-sm-1 text-nowrap' wrapperClassName="col-sm-10">
+                <Input type="text" wrapperClassName="col-sm-11" placeholder="出典(省略可)" />
+                <Input type="text" wrapperClassName="col-sm-11" placeholder="出典URL(省略可)" />
+           </Input>
 
+            <Input type="text" wrapperClassName="col-sm-11" placeholder="タグ(省略可)"
+              label='タグ' labelClassName='col-sm-1 text-nowrap' />
 
-          </form>
+            <Row>
+              <Col sm={2} smOffset={1}>
+              <Button bsStyle='primary' type='submit'
+                title="入力した年表を登録する" data-placement="bottom" data-toggle="tooltip"
+                onClick={this.props.handleInput}>
+
+                <Glyphicon glyph='plus' /> 登録
+              </Button>
+              </Col>
+
+              <Col sm={2}>
+              <Button type='cancel'
+                title='入力欄を閉じる' data-placement="bottom" data-toggle="tooltip"
+                onClick={this.props.handleCloseInput}>
+                <Glyphicon glyph='remove' /> 閉じる
+              </Button>
+                                   </Col>
+                                   </Row>
+
+        </form>
+
 
         </Panel>
 
 
-      <div className="panel panel-default">
-        <div className="panel-heading">
-          <div className="panel-title">
-          年表の新規入力&nbsp;&nbsp;
-          <button id="btnCloseInputField" className="btn btn-default"
-            title="入力欄を閉じる" data-placement="bottom" data-toggle="tooltip"
-            type="button" onClick={this.props.handleCloseInput}>
-              <span className="glyphicon glyphicon-remove" />閉じる
-          </button>
-          </div>
-        </div>
-        <div className="panel-body">
-
-          <form className="form-horizontal">
-            <div className="form-group">
-              <label
-                className="col-sm-1 control-label text-right text-nowrap">
-                日付
-              </label>
-              <div className="col-sm-11 form-inline">
-                <DropdownButton bsStyle="default" title={this.state.yeartype} key="dropdownYearType" onSelect={function(){}}>
-                  <MenuItem eventKey="1" onClick={this.handleChangeYearType}>西暦</MenuItem>
-                  <MenuItem eventKey="2" onClick={this.handleChangeYearType}>平成</MenuItem>
-                  <MenuItem eventKey="3" onClick={this.handleChangeYearType}>昭和</MenuItem>
-                  <MenuItem eventKey="4" onClick={this.handleChangeYearType}>大正</MenuItem>
-                  <MenuItem eventKey="5" onClick={this.handleChangeYearType}>明治</MenuItem>
-                </DropdownButton>
-              </div>
-            </div>
-
-            <div className="form-group">
-              <label
-                className="col-sm-1 control-label text-right text-nowrap">
-                出来事
-              </label>
-              <div className="col-sm-11">
-                <textarea id="textDesc" className="form-control" rows="2" placeholder="出来事" />
-              </div>
-            </div>
-
-            <div className="form-group">
-              <label
-                className="col-sm-1 control-label text-right text-nowrap">
-                出典
-              </label>
-              <div className="col-sm-11">
-                <input type="text" id="textSource" className="form-control" placeholder="出典(省略可)" />
-                <input type="text" id="textSourceURL" className="form-control" placeholder="出典URL(省略可)" />
-              </div>
-            </div>
-
-            <div className="form-group">
-              <label
-                className="col-sm-1 control-label text-right text-nowrap">
-                タグ
-              </label>
-              <div className="col-sm-11">
-                <input type="text" id="textTag" className="form-control" placeholder="タグ(省略可)" />
-              </div>
-            </div>
-
-            <div className="form-group">
-              <div className="col-sm-offset-1 col-sm-11">
-                <div className="col-sm-2">
-                  <button type="submit" id="btnEntry" className="btn btn-primary form-control"
-                    title="入力した年表を登録する" data-placement="bottom" data-toggle="tooltip"
-                    onClick={this.props.handleInput}>
-                    <span className="glyphicon glyphicon-plus" />登録
-                  </button>
-                </div>
-                <div className="col-sm-2">
-                  <button id="btnCloseInputField" className="btn btn-default form-control"
-                    title="入力欄を閉じる" data-placement="bottom" data-toggle="tooltip"
-                    type="button" onClick={this.props.handleCloseInput}>
-                      <span className="glyphicon glyphicon-remove" />閉じる
-                  </button>
-                </div>
-              </div>
-            </div>
-          </form>
-        </div>
       </div>
-                      </div>
     );
   }
 });
