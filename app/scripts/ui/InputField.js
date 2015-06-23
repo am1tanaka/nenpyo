@@ -5,6 +5,7 @@
  */
 
 var React = require('react/addons'),
+    ConfirmModal = require('./ConfirmModal'),
     Variables = require('../variables'),
     YearConverter = require('../YearConverter');
 
@@ -92,109 +93,116 @@ var InputField = React.createClass({
 
     return (
       <div>
+        <div>{this.props.tagList[0]}</div>
+
+        <ConfirmModal title='登録' body='本文' btnYes='登録' handleYes={function() {}}
+          btnNo='閉じる'
+          id='confirmEntry' />
+
         <div className="panel panel-default">
-        <div className="panel-heading">
-          <div className="panel-title">
-          年表の新規入力&nbsp;&nbsp;
-          <button id="btnCloseInputField" className="btn btn-default"
-            title="入力欄を閉じる" data-placement="bottom" data-toggle="tooltip"
-            type="button" onClick={this.props.handleCloseInput}>
-              <span className="glyphicon glyphicon-remove" />閉じる
-          </button>
+          <div className="panel-heading">
+            <div className="panel-title">
+              年表の新規入力&nbsp;&nbsp;
+              <button id="btnCloseInputField" className="btn btn-default"
+                title="入力欄を閉じる" data-placement="bottom" data-toggle="tooltip"
+                type="button" onClick={this.props.handleCloseInput}>
+                  <span className="glyphicon glyphicon-remove" />閉じる
+              </button>
+            </div>
+          </div>
+          <div className="panel-body">
+            <form className="form-horizontal">
+              <div className="form-group">
+                <label htmlFor="dropdownDate"
+                  className="col-sm-1 control-label text-right text-nowrap">
+                  日付
+                </label>
+                <div className="col-sm-11 form-inline">
+                  <button className="btn btn-default dropdown-toggle" type="button" id="dropdownDate"
+                    data-toggle="dropdown" aria-expanded="true">
+                    {this.state.yearType}&nbsp;<span className="caret"></span>
+                  </button>
+                  <ul className="dropdown-menu" role="menu" aria-labelledby="dropdownMenu1">
+                    <MenuYearType handleChange={this.handleChangeYearType} yearType={"西暦"} />
+                    <MenuYearType handleChange={this.handleChangeYearType} yearType={"平成"} />
+                    <MenuYearType handleChange={this.handleChangeYearType} yearType={"昭和"} />
+                    <MenuYearType handleChange={this.handleChangeYearType} yearType={"大正"} />
+                    <MenuYearType handleChange={this.handleChangeYearType} yearType={"明治"} />
+                  </ul>
+                  <input type="text" className="form-control" placeholder="年"
+                    onChange={this.handleChangeYear} value={this.state.year} size="4" />
+                  <input type="text" className="form-control" placeholder="月" size="2"
+                    onChange={this.handleChangeMonth} value={this.state.month} />
+                  <input type="text" className="form-control" placeholder="日" size="2"
+                    onChange={this.handleChangeDay} value={this.state.day} />
+                  <p className='help-block'>({convYear})</p>
+                </div>
+              </div>
+
+              <div className="form-group">
+                <label htmlFor="textDesc"
+                  className="col-sm-1 control-label text-right text-nowrap">
+                  出来事
+                </label>
+                <div className="col-sm-11">
+                  <textarea id="textDesc" className="form-control" rows="2" placeholder="出来事"
+                    valueLink={this.linkState('desc')}
+                    maxLength={Variables.DESC_MAX} />
+                </div>
+              </div>
+
+              <div className="form-group">
+                <label htmlFor="textSource"
+                  className="col-sm-1 control-label text-right text-nowrap">
+                  出典
+                </label>
+                <div className="col-sm-11">
+                  <input type="text" id="textSource" className="form-control" placeholder="出典(省略可)"
+                   maxLength={Variables.SOURCE_MAX}
+                   valueLink={this.linkState('source')}
+                  />
+                  <input type="text" id="textSourceURL" className="form-control" placeholder="出典URL(省略可)"
+                    maxLength={Variables.SOURCE_URL_MAX}
+                    valueLink={this.linkState('sourceUrl')} />
+                </div>
+              </div>
+
+              <div className="form-group">
+                <label htmlFor="textTag"
+                  className="col-sm-1 control-label text-right text-nowrap">
+                  タグ
+                </label>
+                <div className="col-sm-11">
+                  <input type="text" id="textTag" className="form-control" placeholder="タグ(省略可)"
+                    maxLength={Variables.TAG_MAX}
+                    value={this.state.tags} />
+                  <p className='help-block'>複数指定する場合は、スペースで区切ってください。</p>
+                </div>
+              </div>
+
+              <div className="form-group">
+                <div className="col-sm-offset-1 col-sm-11">
+
+                  <div className="col-sm-2">
+                    <button type="button" className="btn btn-primary form-control"
+                      data-toggle="modal" data-target="#confirmEntry"
+                      title="入力した年表を登録する" data-placement="bottom">
+                      <span className="glyphicon glyphicon-plus" />&nbsp;登録
+                    </button>
+                  </div>
+
+                  <div className="col-sm-2">
+                    <button id="btnCloseInputField" className="btn btn-default form-control"
+                      title="入力欄を閉じる" data-placement="bottom" data-toggle="tooltip"
+                      type="button" onClick={this.props.handleCloseInput}>
+                        <span className="glyphicon glyphicon-remove" />閉じる
+                    </button>
+                  </div>
+                </div>
+              </div>
+            </form>
           </div>
         </div>
-        <div className="panel-body">
-          <form className="form-horizontal">
-            <div className="form-group">
-              <label htmlFor="dropdownDate"
-                className="col-sm-1 control-label text-right text-nowrap">
-                日付
-              </label>
-              <div className="col-sm-11 form-inline">
-                <button className="btn btn-default dropdown-toggle" type="button" id="dropdownDate"
-                  data-toggle="dropdown" aria-expanded="true">
-                {this.state.yearType}&nbsp;<span className="caret"></span>
-                </button>
-                <ul className="dropdown-menu" role="menu" aria-labelledby="dropdownMenu1">
-                  <MenuYearType handleChange={this.handleChangeYearType} yearType={"西暦"} />
-                  <MenuYearType handleChange={this.handleChangeYearType} yearType={"平成"} />
-                  <MenuYearType handleChange={this.handleChangeYearType} yearType={"昭和"} />
-                  <MenuYearType handleChange={this.handleChangeYearType} yearType={"大正"} />
-                  <MenuYearType handleChange={this.handleChangeYearType} yearType={"明治"} />
-                </ul>
-                <input type="text" className="form-control" placeholder="年"
-                  onChange={this.handleChangeYear} value={this.state.year} size="4" />
-                <input type="text" className="form-control" placeholder="月" size="2"
-                  onChange={this.handleChangeMonth} value={this.state.month} />
-                <input type="text" className="form-control" placeholder="日" size="2"
-                  onChange={this.handleChangeDay} value={this.state.day} />
-                <p className='help-block'>({convYear})</p>
-              </div>
-            </div>
-
-            <div className="form-group">
-              <label htmlFor="textDesc"
-                className="col-sm-1 control-label text-right text-nowrap">
-                出来事
-              </label>
-              <div className="col-sm-11">
-                <textarea id="textDesc" className="form-control" rows="2" placeholder="出来事"
-                  valueLink={this.linkState('desc')}
-                  maxLength={Variables.DESC_MAX} />
-              </div>
-            </div>
-
-            <div className="form-group">
-              <label htmlFor="textSource"
-                className="col-sm-1 control-label text-right text-nowrap">
-                出典
-              </label>
-              <div className="col-sm-11">
-                <input type="text" id="textSource" className="form-control" placeholder="出典(省略可)"
-                 maxLength={Variables.SOURCE_MAX}
-                 valueLink={this.linkState('source')}
-                />
-                <input type="text" id="textSourceURL" className="form-control" placeholder="出典URL(省略可)"
-                  maxLength={Variables.SOURCE_URL_MAX}
-                  valueLink={this.linkState('sourceUrl')} />
-              </div>
-            </div>
-
-            <div className="form-group">
-              <label htmlFor="textTag"
-                className="col-sm-1 control-label text-right text-nowrap">
-                タグ
-              </label>
-              <div className="col-sm-11">
-                <input type="text" id="textTag" className="form-control" placeholder="タグ(省略可)"
-                  maxLength={Variables.TAG_MAX}
-                  />
-                <p className='help-block'>複数指定する場合は、スペースで区切ってください。</p>
-              </div>
-            </div>
-
-            <div className="form-group">
-              <div className="col-sm-offset-1 col-sm-11">
-                <div className="col-sm-2">
-                  <button type="submit" id="btnEntry" className="btn btn-primary form-control"
-                    title="入力した年表を登録する" data-placement="bottom" data-toggle="tooltip"
-                    onClick={this.props.handleInput}>
-                    <span className="glyphicon glyphicon-plus" />登録
-                  </button>
-                </div>
-                <div className="col-sm-2">
-                  <button id="btnCloseInputField" className="btn btn-default form-control"
-                    title="入力欄を閉じる" data-placement="bottom" data-toggle="tooltip"
-                    type="button" onClick={this.props.handleCloseInput}>
-                      <span className="glyphicon glyphicon-remove" />閉じる
-                  </button>
-                </div>
-              </div>
-            </div>
-          </form>
-        </div>
-      </div>
-
       </div>
     );
   }

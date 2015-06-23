@@ -1,4 +1,8 @@
 var NenpyoData= {
+  tagList: [
+    "多摩NT",
+    "東京"
+  ],
   data: [
     {
       "year":1868,

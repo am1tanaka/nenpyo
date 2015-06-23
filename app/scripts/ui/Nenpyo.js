@@ -8,7 +8,6 @@ var React = require('react');
 var NenpyoTBody = require('./NenpyoTBody'),
     Header = require("./Header"),
     InputField = require("./InputField"),
-    ConfirmModal = require("./ConfirmModal"),
     TestData = require("../TestData");
 
 // 年月日のパーツを出力
@@ -153,7 +152,9 @@ var Nenpyo = React.createClass({
       // btnYes:進めるボタンに表示する文字列
       // handleYes:進める処理
       // btnNo:閉じるボタンに表示する文字列。省略するとCancelと表示
-      confirmModal: {disp: false}
+      confirmModal: {disp: false},
+      tagList: TestData.tagList
+
     };
   },
   handleAddCol : function(e) {
@@ -208,7 +209,10 @@ var Nenpyo = React.createClass({
     this.handleCloseConfirmModal();
   },
   // 入力画面で入力ボタンを押したので、確認ウィンドウを出力する
-  handleInput: function() {
+  handleInput: function(e) {
+    e.preventDefault();
+
+    /*
     var entryNenpyo = this.entryNenpyo;
 
     this.setState({
@@ -221,35 +225,12 @@ var Nenpyo = React.createClass({
         handleYes: entryNenpyo
       }
     });
+      */
   },
   render: function() {
 
     return (
       <div>
-            <button type="button" className="btn btn-primary btn-lg" data-toggle="modal" data-target="#myModal">
-        Launch demo modal
-      </button>
-
-      <div className="modal fade" id="myModal" tabIndex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
-        <div className="modal-dialog">
-          <div className="modal-content">
-            <div className="modal-header">
-              <button type="button" className="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span className="sr-only">Close</span></button>
-              <h4 className="modal-title" id="myModalLabel">Modal titleテスト</h4>
-            </div>
-            <div className="modal-body">
-              ...
-            </div>
-            <div className="modal-footer">
-              <button type="button" className="btn btn-default" data-dismiss="modal">Close</button>
-              <button type="button" className="btn btn-primary">Save changes</button>
-            </div>
-          </div>
-        </div>
-      </div>
-
-
-        <ConfirmModal data={this.state.confirmModal} handleClose={this.handleCloseConfirmModal} />
         <Header
           permission={this.state.permission}
           doSignIn={this.doSignIn}
@@ -259,6 +240,7 @@ var Nenpyo = React.createClass({
           dispInput={this.state.dispInput}
           handleCloseInput={this.handleCloseInput}
           handleInput={this.handleInput}
+          tagList={this.state.tagList}
         />
         <table className="table table-striped table-bordered">
           <NenpyoColgroup tags={this.state.tags} />
