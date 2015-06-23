@@ -4,7 +4,7 @@
  * Nenpyo　入力ブロック用Reactファイル
  */
 
-var React = require('react'),
+var React = require('react/addons'),
     Button = require('react-bootstrap/lib/Button'),
     ButtonInput = require('react-bootstrap/lib/ButtonInput'),
     Col = require('react-bootstrap/lib/Col'),
@@ -16,6 +16,7 @@ var React = require('react'),
     MenuItem = require('react-bootstrap/lib/MenuItem'),
     Panel = require('react-bootstrap/lib/Panel'),
     Row = require('react-bootstrap/lib/Row'),
+    Variables = require('../variables'),
     YearConverter = require('../YearConverter');
 
 var MenuYearType = React.createClass({
@@ -31,18 +32,23 @@ var MenuYearType = React.createClass({
  * @returns {HTML} ヘッダのReactオブジェクトを返す
  */
 var InputField = React.createClass({
+  mixins: [React.addons.LinkedStateMixin],
   // state
   getInitialState: function() {
     return {
-      yeartype: "西暦",
+      yearType: "西暦",
       year: "",
       month: "",
-      day: ""
+      day: "",
+      desc: "",
+      source: "",
+      soueceUrl: "",
+      tags: ""
     };
   },
   // 西暦、和暦をドロップダウンから選択した時の処理
   handleChangeYearType: function(e) {
-    this.setState({yeartype: e.currentTarget.textContent});
+    this.setState({yearType: e.currentTarget.textContent});
   },
   // 年の整合性チェック
   handleChangeYear: function(e) {
@@ -76,7 +82,7 @@ var InputField = React.createClass({
       return "-";
     }
 
-    if (this.state.yeartype == "西暦") {
+    if (this.state.yearType == "西暦") {
       // 西暦＞和暦変換
       mon = this.state.month.length == 0 ? 12 : this.state.month;
       day = this.state.day.length == 0 ? 31 : this.state.day;
@@ -97,8 +103,6 @@ var InputField = React.createClass({
 
     return (
       <div>
-
-
         <div className="panel panel-default">
         <div className="panel-heading">
           <div className="panel-title">
@@ -120,7 +124,7 @@ var InputField = React.createClass({
               <div className="col-sm-11 form-inline">
                 <button className="btn btn-default dropdown-toggle" type="button" id="dropdownDate"
                   data-toggle="dropdown" aria-expanded="true">
-                {this.state.yeartype}&nbsp;<span className="caret"></span>
+                {this.state.yearType}&nbsp;<span className="caret"></span>
                 </button>
                 <ul className="dropdown-menu" role="menu" aria-labelledby="dropdownMenu1">
                   <MenuYearType handleChange={this.handleChangeYearType} yearType={"西暦"} />
@@ -129,13 +133,13 @@ var InputField = React.createClass({
                   <MenuYearType handleChange={this.handleChangeYearType} yearType={"大正"} />
                   <MenuYearType handleChange={this.handleChangeYearType} yearType={"明治"} />
                 </ul>
-                <input type="text" className="form-control" placeholder="年" size="4" maxsize="4"
-                  onChange={this.handleChangeYear} value={this.state.year} />
-                <input type="text" className="form-control" placeholder="月" size="2" maxsize="2"
+                <input type="text" className="form-control" placeholder="年"
+                  onChange={this.handleChangeYear} value={this.state.year} size="4" />
+                <input type="text" className="form-control" placeholder="月" size="2"
                   onChange={this.handleChangeMonth} value={this.state.month} />
-                <input type="text" className="form-control" placeholder="日" size="2" maxsize="2"
+                <input type="text" className="form-control" placeholder="日" size="2"
                   onChange={this.handleChangeDay} value={this.state.day} />
-                <div>({convYear})</div>
+                <p className='help-block'>({convYear})</p>
               </div>
             </div>
 
@@ -145,7 +149,9 @@ var InputField = React.createClass({
                 出来事
               </label>
               <div className="col-sm-11">
-                <textarea id="textDesc" className="form-control" rows="2" placeholder="出来事" />
+                <textarea id="textDesc" className="form-control" rows="2" placeholder="出来事"
+                  valueLink={this.linkState('desc')}
+                  maxLength={Variables.DESC_MAX} />
               </div>
             </div>
 
@@ -155,8 +161,13 @@ var InputField = React.createClass({
                 出典
               </label>
               <div className="col-sm-11">
-                <input type="text" id="textSource" className="form-control" placeholder="出典(省略可)" />
-                <input type="text" id="textSourceURL" className="form-control" placeholder="出典URL(省略可)" />
+                <input type="text" id="textSource" className="form-control" placeholder="出典(省略可)"
+                 maxLength={Variables.SOURCE_MAX}
+                 valueLink={this.linkState('source')}
+                />
+                <input type="text" id="textSourceURL" className="form-control" placeholder="出典URL(省略可)"
+                  maxLength={Variables.SOURCE_URL_MAX}
+                  valueLink={this.linkState('sourceUrl')} />
               </div>
             </div>
 
@@ -166,7 +177,10 @@ var InputField = React.createClass({
                 タグ
               </label>
               <div className="col-sm-11">
-                <input type="text" id="textTag" className="form-control" placeholder="タグ(省略可)" />
+                <input type="text" id="textTag" className="form-control" placeholder="タグ(省略可)"
+                  maxLength={Variables.TAG_MAX}
+                  />
+                <p className='help-block'>複数指定する場合は、スペースで区切ってください。</p>
               </div>
             </div>
 
@@ -207,7 +221,7 @@ var InputField = React.createClass({
             <Input label='日付' labelClassName='col-sm-1 text-nowrap' wrapperClassName="col-sm-10">
               <Row>
                 <Col sm={1}>
-                  <DropdownButton bsStyle="default" title={this.state.yeartype} key="dropdownYearType" onSelect={function(){}}>
+                  <DropdownButton bsStyle="default" title={this.state.yearType} key="dropdownYearType" onSelect={function(){}}>
                     <MenuItem eventKey="1" onClick={this.handleChangeYearType}>西暦</MenuItem>
                     <MenuItem eventKey="2" onClick={this.handleChangeYearType}>平成</MenuItem>
                     <MenuItem eventKey="3" onClick={this.handleChangeYearType}>昭和</MenuItem>
