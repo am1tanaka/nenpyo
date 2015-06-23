@@ -93,8 +93,6 @@ var InputField = React.createClass({
 
     return (
       <div>
-        <div>{this.props.tagList[0]}</div>
-
         <ConfirmModal title='登録' body='本文' btnYes='登録' handleYes={function() {}}
           btnNo='閉じる'
           id='confirmEntry' />

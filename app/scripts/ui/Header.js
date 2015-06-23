@@ -84,14 +84,14 @@ var Header = React.createClass({
           <nav className="navbar navbar-default navbar-fixed-top container-fluid">
             <HeaderBlock addclass="pull-left">
               <HeaderText>多摩NT年表</HeaderText>
-              <HeaderButton icon="glyphicon-plus" key="nenpyo" onClick={this.props.handleOpenInput}>年表追加</HeaderButton>
-              <HeaderButton icon="glyphicon-download" key="csv" onClick={this.handleCSV}>CSV取得</HeaderButton>
-              <HeaderButton icon="glyphicon-upload" key="import" onClick={this.handleImport}>インポート</HeaderButton>
+              <HeaderButton icon="glyphicon-plus" key="nenpyo" onClick={this.props.handleOpenInput}>&nbsp;年表追加</HeaderButton>
+              <HeaderButton icon="glyphicon-download" key="csv" onClick={this.handleCSV}>&nbsp;CSV取得</HeaderButton>
+              <HeaderButton icon="glyphicon-upload" key="import" onClick={this.handleImport}>&nbsp;インポート</HeaderButton>
             </HeaderBlock>
             <HeaderBlock addclass="pull-right">
               <HeaderText>Username</HeaderText>
-              <HeaderButton icon="glyphicon-cog" key="setting" onClick={this.handleUserSetting}>Settings</HeaderButton>
-              <HeaderButton icon="glyphicon-log-out" key="signout" onClick={this.props.handleSignOut}>Sign Out</HeaderButton>
+              <HeaderButton icon="glyphicon-cog" key="setting" onClick={this.handleUserSetting}>&nbsp;Settings</HeaderButton>
+              <HeaderButton icon="glyphicon-log-out" key="signout" onClick={this.props.handleSignOut}>&nbsp;Sign Out</HeaderButton>
             </HeaderBlock>
           </nav>
         </div>
@@ -106,8 +106,8 @@ var Header = React.createClass({
             <HeaderText>多摩NT年表</HeaderText>
           </HeaderBlock>
           <HeaderBlock addclass="pull-right">
-            <HeaderButton icon="glyphicon-hand-up" key="signup">Sign Up</HeaderButton>
-            <HeaderButton icon="glyphicon-log-in" key="signin" onClick={this.props.doSignIn}>Sign In</HeaderButton>
+            <HeaderButton icon="glyphicon-hand-up" key="signup">&nbsp;Sign Up</HeaderButton>
+            <HeaderButton icon="glyphicon-log-in" key="signin" onClick={this.props.doSignIn}>&nbsp;Sign In</HeaderButton>
           </HeaderBlock>
         </nav>
       </div>
