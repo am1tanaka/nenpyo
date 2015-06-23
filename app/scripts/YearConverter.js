@@ -1,6 +1,34 @@
 'use strict';
 
 var YearConverter = {
+  //
+  // gengoに元号を日本語の文字列
+  // nenに年数を数値で指定
+  //
+
+  /**
+   * 和暦を西暦に変換する
+   * @param {string} gengo 言語の日本語文字列
+   *                       @param {number} nen   年数
+   *                       @return {String} 無効な時は-。それ以外は西暦を返す
+   */
+  convWareki2AD: function(gengo,nen) {
+    nen = nen-0;
+    if (gengo == "平成") {
+      return nen+1988;
+    }
+    else if (gengo == "昭和") {
+      return nen+1925;
+    }
+    else if (gengo == "大正") {
+      return nen+1911;
+    }
+    else if (gengo == "明治") {
+      return nen+1867;
+    }
+    return "-";
+  },
+  //
   convYear: function(inad,inmon,indy) {
     var ad = inad-0;
     var mon = inmon-0 || 12;  // 省略時は最終日にする

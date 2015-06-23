@@ -80,7 +80,7 @@ var InputField = React.createClass({
     }
 
     // 和暦＞西暦変換
-    return "-";
+    return YearConverter.convWareki2AD(this.state.yearType, this.state.year);
   },
   render: function() {
     if (!this.props.dispInput)
