@@ -47,26 +47,6 @@ var InputField = React.createClass({
       tags: ""
     };
   },
-  // suggestion engine
-  states : new Bloodhound({
-    datumTokenizer: Bloodhound.tokenizers.whitespace,
-    queryTokenizer: Bloodhound.tokenizers.whitespace,
-    // `states` is an array of state names defined in "The Basics"
-    local: states
-  }),
-  componentDidMount: function() {
-    React.findDOMNode(this.refs.inputTag).focus();
-    $ (React.findDOMNode(this.refs.inputTag)).typeahead({
-      hint: true,
-      highlight: true,
-      minLength: 1
-    },
-    {
-      name: 'states',
-      source: this.states
-    });
-  },
-
   // 西暦、和暦をドロップダウンから選択した時の処理
   handleChangeYearType: function(e) {
     this.setState({yearType: e.currentTarget.textContent});
@@ -112,6 +92,44 @@ var InputField = React.createClass({
 
     // 和暦＞西暦変換
     return YearConverter.convWareki2AD(this.state.yearType, this.state.year);
+  },
+  componentDidMount: function() {
+    this.setTypeaheadTag();
+  },
+  componentDidUpdate: function() {
+    // 非表示の時は何もしない
+    if (!this.props.dispInput)  return ;
+    // 再設定
+    this.setTypeaheadTag();
+  },
+  tagsWithDefaults(q, sync) {
+    // suggestion engine
+    var tags = new Bloodhound({
+      datumTokenizer: Bloodhound.tokenizers.whitespace,
+      queryTokenizer: Bloodhound.tokenizers.whitespace,
+      // an array of tags defined in "The Basics"
+      local: this.props.tagList
+    });
+
+    if (q === '') {
+      // 空欄の時は全てを返す
+      sync(this.props.tagList);
+    }
+    else {
+      tags.search(q, sync);
+    }
+  },
+  setTypeaheadTag: function() {
+    React.findDOMNode(this.refs.inputTag).focus();
+    $ (React.findDOMNode(this.refs.inputTag)).typeahead({
+      hint: true,
+      highlight: true,
+      minLength: 0
+    },
+    {
+      name: 'tags',
+      source: this.tagsWithDefaults
+    });
   },
   render: function() {
     if (!this.props.dispInput)
@@ -203,7 +221,7 @@ var InputField = React.createClass({
                 </label>
                 <div className="col-sm-11">
                   <div className="bloodhound">
-                    <input type="text" id="textTag" className="typeahead" placeholder="タグ(省略可)"
+                    <input type="text" id="textTag" className="typeahead form-control" placeholder="タグ(省略可)"
                       maxLength={Variables.TAG_MAX}
                       ref="inputTag" name="inputTag"
                       />
