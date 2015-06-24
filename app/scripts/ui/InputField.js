@@ -93,15 +93,6 @@ var InputField = React.createClass({
     // 和暦＞西暦変換
     return YearConverter.convWareki2AD(this.state.yearType, this.state.year);
   },
-  componentDidMount: function() {
-    this.setTypeaheadTag();
-  },
-  componentDidUpdate: function() {
-    // 非表示の時は何もしない
-    if (!this.props.dispInput)  return ;
-    // 再設定
-    this.setTypeaheadTag();
-  },
   tagsWithDefaults(q, sync) {
     // suggestion engine
     var tags = new Bloodhound({
@@ -119,7 +110,7 @@ var InputField = React.createClass({
       tags.search(q, sync);
     }
   },
-  setTypeaheadTag: function() {
+  componentDidMount: function() {
     React.findDOMNode(this.refs.inputTag).focus();
     $ (React.findDOMNode(this.refs.inputTag)).typeahead({
       hint: true,
@@ -132,16 +123,12 @@ var InputField = React.createClass({
     });
   },
   render: function() {
-    if (!this.props.dispInput)
-    {
-      return <div></div>;
-    }
-
     // 和暦と西暦を確認のために変換する
     var convYear = this.getConvYear();
+    var hidden = this.props.dispInput ? "" : "hidden";
 
     return (
-      <div>
+      <div className={hidden}>
         <ConfirmModal title='登録' body='本文' btnYes='登録' handleYes={function() {}}
           btnNo='閉じる'
           id='confirmEntry' />
