@@ -29,6 +29,28 @@ var MenuYearType = React.createClass({
 });
 
 /**
+ * this.props.tags配列で渡されたタグの文字列を、ボタン形式で、
+ * 削除つきのブロックとして返す
+ */
+var ButtonTagList = React.createClass({
+  render: function() {
+    var ret = this.props.tags.map(function(tag) {
+      return (
+        <span key={'tagkouho_'+tag} className='framed-text'>{tag}&nbsp;
+          <span className='btn' key={tag}
+            onClick={function(e){
+              var deltag = tag;
+              alert(deltag);
+            }}>&times;</span>
+        </span>
+      );
+    });
+
+    return <div>{ret}</div>;
+  }
+});
+
+/**
  * ヘッダコンテナ
  * @returns {HTML} ヘッダのReactオブジェクトを返す
  */
@@ -44,7 +66,8 @@ var InputField = React.createClass({
       desc: "",
       source: "",
       soueceUrl: "",
-      tags: ""
+      tags: "",
+      nowSelectedTags: []
     };
   },
   // 西暦、和暦をドロップダウンから選択した時の処理
@@ -73,6 +96,21 @@ var InputField = React.createClass({
     var newval = e.target.value;
     if ((newval.length == 0) || ((newval-0 >= 1) && (newval-0 <= 31))) {
       this.setState({day: newval});
+    }
+  },
+  // enterキーのキーアップを検出
+  handleKeyupTag: function(e) {
+    if (e.keyCode == 13) {
+      var txttag = $('#textTag');
+      var intag = txttag.val();
+      if (intag.length > 0) {
+        var newar = this.state.nowSelectedTags;
+        newar.push(intag);
+        this.setState({nowSelectedTags:newar});
+        //
+        txttag.val('');
+        //$ (React.findDOMNode(this.refs.inputTag)).empty();
+      }
     }
   },
   // 西暦と和暦を変換したものを表示する
@@ -121,6 +159,7 @@ var InputField = React.createClass({
       name: 'tags',
       source: this.tagsWithDefaults
     });
+
   },
   render: function() {
     // 和暦と西暦を確認のために変換する
@@ -207,13 +246,16 @@ var InputField = React.createClass({
                   タグ
                 </label>
                 <div className="col-sm-11">
+                  <ButtonTagList tags={this.state.nowSelectedTags} />
                   <div className="bloodhound">
                     <input type="text" id="textTag" className="typeahead form-control" placeholder="タグ(省略可)"
+                      size={Variables.TAG_MAX}
                       maxLength={Variables.TAG_MAX}
                       ref="inputTag" name="inputTag"
+                      onKeyUp={this.handleKeyupTag}
                       />
                   </div>
-                  <p className='help-block'>複数指定する場合は、スペースで区切ってください。</p>
+                  <p className='help-block'>タグを選んで[Enter]を押すと複数のタグを指定できます。</p>
                 </div>
               </div>
 
