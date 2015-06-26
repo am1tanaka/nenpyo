@@ -58,6 +58,45 @@ var ButtonTagList = React.createClass({
 });
 
 /**
+ * 日付の入力ブロックを返す
+ * yearType stateのyearTypeを渡す
+ * onChangeYearType 暦を変更した時の関数を渡す
+ */
+var InputDate = React.createClass({
+    render: function() {
+      return (
+      <div className="form-group">
+        <label htmlFor="dropdownDate"
+          className="col-sm-1 control-label text-right text-nowrap">
+          日付
+        </label>
+        <div className="col-sm-11 form-inline">
+          <button className="btn btn-default dropdown-toggle" type="button" id="dropdownDate"
+            data-toggle="dropdown" aria-expanded="true">
+            {this.props.yearType}&nbsp;<span className="caret"></span>
+          </button>
+          <ul className="dropdown-menu" role="menu" aria-labelledby="dropdownMenu1">
+            <MenuYearType handleChange={this.props.onChangeYearType} yearType={"西暦"} />
+            <MenuYearType handleChange={this.props.onChangeYearType} yearType={"平成"} />
+            <MenuYearType handleChange={this.props.onChangeYearType} yearType={"昭和"} />
+            <MenuYearType handleChange={this.props.onChangeYearType} yearType={"大正"} />
+            <MenuYearType handleChange={this.props.onChangeYearType} yearType={"明治"} />
+          </ul>
+          <input type="text" className="form-control" placeholder="年"
+            onChange={this.props.onChangeYear} value={this.props.year} size="4" />
+          <input type="text" className="form-control" placeholder="月" size="2"
+            onChange={this.props.onChangeMonth} value={this.props.month} />
+          <input type="text" className="form-control" placeholder="日" size="2"
+            onChange={this.props.onChangeDay} value={this.props.day} />
+          <p className='help-block'>({this.props.convYear})</p>
+        </div>
+      </div>
+      );
+
+    }
+});
+
+/**
  * ヘッダコンテナ
  * @returns {HTML} ヘッダのReactオブジェクトを返す
  */
@@ -141,6 +180,7 @@ var InputField = React.createClass({
         txttag.focus().typeahead('open');
     }
   },
+  // オートコンプリートの候補を再設定する
   refreshBloodhoundTag: function() {
     var nowsel = this.state.nowSelectedTags;
     var newlist = this.props.tagList.filter(function(tag) {
@@ -163,6 +203,7 @@ var InputField = React.createClass({
         source: this.tagsWithDefaults
       });
   },
+  // 候補としてあげたタグを削除
   handleRemoveNowSelectedTag: function(tag) {
     var newar = this.state.nowSelectedTags;
     var idx = $.inArray(tag,newar);
@@ -174,7 +215,9 @@ var InputField = React.createClass({
       this.setState({nowSelectedTags: newar});
     }
   },
+  // オートコンプリートの候補出しオブジェクト
   bloodhoundTag: null,
+  // オートコンプリートのデフォルト挙動のハンドル
   tagsWithDefaults(q, sync) {
     if (q === '') {
       // 空欄の時は全てを返す
@@ -185,6 +228,7 @@ var InputField = React.createClass({
       this.bloodhoundTag.search(q, sync);
     }
   },
+  // コンポーネントが実装された後の処理。オートコンプリートを設定する
   componentDidMount: function() {
     // suggestion engine
     this.bloodhoundTag = new Bloodhound({
@@ -207,6 +251,7 @@ var InputField = React.createClass({
       source: this.tagsWithDefaults
     });
   },
+  // 描画
   render: function() {
     // 和暦と西暦を確認のために変換する
     var convYear = this.getConvYear();
@@ -222,32 +267,18 @@ var InputField = React.createClass({
           <PanelHead onClick={this.props.handleCloseInput} />
           <div className="panel-body">
             <form className="form-horizontal">
-              <div className="form-group">
-                <label htmlFor="dropdownDate"
-                  className="col-sm-1 control-label text-right text-nowrap">
-                  日付
-                </label>
-                <div className="col-sm-11 form-inline">
-                  <button className="btn btn-default dropdown-toggle" type="button" id="dropdownDate"
-                    data-toggle="dropdown" aria-expanded="true">
-                    {this.state.yearType}&nbsp;<span className="caret"></span>
-                  </button>
-                  <ul className="dropdown-menu" role="menu" aria-labelledby="dropdownMenu1">
-                    <MenuYearType handleChange={this.handleChangeYearType} yearType={"西暦"} />
-                    <MenuYearType handleChange={this.handleChangeYearType} yearType={"平成"} />
-                    <MenuYearType handleChange={this.handleChangeYearType} yearType={"昭和"} />
-                    <MenuYearType handleChange={this.handleChangeYearType} yearType={"大正"} />
-                    <MenuYearType handleChange={this.handleChangeYearType} yearType={"明治"} />
-                  </ul>
-                  <input type="text" className="form-control" placeholder="年"
-                    onChange={this.handleChangeYear} value={this.state.year} size="4" />
-                  <input type="text" className="form-control" placeholder="月" size="2"
-                    onChange={this.handleChangeMonth} value={this.state.month} />
-                  <input type="text" className="form-control" placeholder="日" size="2"
-                    onChange={this.handleChangeDay} value={this.state.day} />
-                  <p className='help-block'>({convYear})</p>
-                </div>
-              </div>
+
+              <InputDate
+                yearType={this.state.yearType}
+                onChangeYearType={this.handleChangeYearType}
+                onChangeYear={this.handleChangeYear}
+                year={this.state.year}
+                onChangeMonth={this.handleChangeMonth}
+                month={this.state.month}
+                onChangeDay={this.handleChangeDay}
+                day={this.state.day}
+                convYear={convYear}
+              />
 
               <div className="form-group">
                 <label htmlFor="textDesc"
