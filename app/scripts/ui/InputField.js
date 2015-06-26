@@ -59,8 +59,11 @@ var ButtonTagList = React.createClass({
 
 /**
  * 日付の入力ブロックを返す
- * yearType stateのyearTypeを渡す
  * onChangeYearType 暦を変更した時の関数を渡す
+ * onChangeYear 年を書き換えた時のイベントハンドラ
+ * onChangeMonth 月を書き換えた時のイベントハンドラ
+ * onChangeDay 日を書き換えた時のイベントハンドラ
+ * nowState 現在のthis.stateを渡す
  */
 var InputDate = React.createClass({
     render: function() {
@@ -73,7 +76,7 @@ var InputDate = React.createClass({
         <div className="col-sm-11 form-inline">
           <button className="btn btn-default dropdown-toggle" type="button" id="dropdownDate"
             data-toggle="dropdown" aria-expanded="true">
-            {this.props.yearType}&nbsp;<span className="caret"></span>
+            {this.props.nowState.yearType}&nbsp;<span className="caret"></span>
           </button>
           <ul className="dropdown-menu" role="menu" aria-labelledby="dropdownMenu1">
             <MenuYearType handleChange={this.props.onChangeYearType} yearType={"西暦"} />
@@ -83,17 +86,38 @@ var InputDate = React.createClass({
             <MenuYearType handleChange={this.props.onChangeYearType} yearType={"明治"} />
           </ul>
           <input type="text" className="form-control" placeholder="年"
-            onChange={this.props.onChangeYear} value={this.props.year} size="4" />
+            onChange={this.props.onChangeYear} value={this.props.nowState.year} size="4" />
           <input type="text" className="form-control" placeholder="月" size="2"
-            onChange={this.props.onChangeMonth} value={this.props.month} />
+            onChange={this.props.onChangeMonth} value={this.props.nowState.month} />
           <input type="text" className="form-control" placeholder="日" size="2"
-            onChange={this.props.onChangeDay} value={this.props.day} />
+            onChange={this.props.onChangeDay} value={this.props.nowState.day} />
           <p className='help-block'>({this.props.convYear})</p>
         </div>
       </div>
       );
-
     }
+});
+
+/**
+ * できごとの入力ブロックの出力
+ * valueLink 2wayバインディングのvalueLink
+ */
+var InputDesc = React.createClass({
+      render: function() {
+        return (
+          <div className="form-group">
+            <label htmlFor="textDesc"
+              className="col-sm-1 control-label text-right text-nowrap">
+              出来事
+            </label>
+            <div className="col-sm-11">
+              <textarea id="textDesc" className="form-control" rows="2" placeholder="出来事"
+                valueLink={this.props.valueLink}
+                maxLength={Variables.DESC_MAX} />
+            </div>
+          </div>
+        );
+      }
 });
 
 /**
@@ -111,8 +135,8 @@ var InputField = React.createClass({
       day: "",
       desc: "",
       source: "",
-      soueceUrl: "",
-      tags: "",
+      sourceUrl: "",
+      tag: "",
       nowSelectedTags: []
     };
   },
@@ -133,6 +157,14 @@ var InputField = React.createClass({
 
     // 和暦＞西暦変換
     return YearConverter.convWareki2AD(this.state.yearType, this.state.year);
+  },
+  // this.stateから、確認文字列を出力して返す
+  getConfirmBody: function() {
+    var ret = "";
+    for (var dt in this.state) {
+      ret += "["+dt+"]"+this.state[dt]+" / ";
+    }
+    return <div className='btn btn-default'>{ret}</div>;
   },
   // 西暦、和暦をドロップダウンから選択した時の処理
   handleChangeYearType: function(e) {
@@ -256,10 +288,11 @@ var InputField = React.createClass({
     // 和暦と西暦を確認のために変換する
     var convYear = this.getConvYear();
     var hidden = this.props.dispInput ? "" : "hidden";
+    var confBody = this.getConfirmBody(this.state);
 
     return (
       <div className={hidden}>
-        <ConfirmModal title='登録' body='本文' btnYes='登録' handleYes={function() {}}
+        <ConfirmModal title='登録' body={confBody} btnYes='登録' handleYes={function() {}}
           btnNo='閉じる'
           id='confirmEntry' />
 
@@ -269,28 +302,17 @@ var InputField = React.createClass({
             <form className="form-horizontal">
 
               <InputDate
-                yearType={this.state.yearType}
+                nowState={this.state}
                 onChangeYearType={this.handleChangeYearType}
                 onChangeYear={this.handleChangeYear}
-                year={this.state.year}
                 onChangeMonth={this.handleChangeMonth}
-                month={this.state.month}
                 onChangeDay={this.handleChangeDay}
-                day={this.state.day}
                 convYear={convYear}
               />
 
-              <div className="form-group">
-                <label htmlFor="textDesc"
-                  className="col-sm-1 control-label text-right text-nowrap">
-                  出来事
-                </label>
-                <div className="col-sm-11">
-                  <textarea id="textDesc" className="form-control" rows="2" placeholder="出来事"
-                    valueLink={this.linkState('desc')}
-                    maxLength={Variables.DESC_MAX} />
-                </div>
-              </div>
+              <InputDesc
+                valueLink={this.linkState('desc')}
+              />
 
               <div className="form-group">
                 <label htmlFor="textSource"
@@ -324,6 +346,7 @@ var InputField = React.createClass({
                         placeholder="タグ(省略可)"
                         maxLength={Variables.TAG_MAX}
                         size={Variables.TAG_MAX*2}
+                        valueLink={this.linkState('tag')}
                         />
                     </div>
                     <button type='button'
