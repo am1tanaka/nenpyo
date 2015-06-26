@@ -121,6 +121,47 @@ var InputDesc = React.createClass({
 });
 
 /**
+ * 登録と閉じるボタンのブロックを出力
+ * onClose 閉じるボタンのハンドラ
+ * enabled 登録の有効、無効をフラグで指定
+ */
+var EntryButtons = React.createClass({
+  render: function() {
+    var cls = "btn btn-primary form-control";
+    if (!this.props.enabled) {
+      cls += " disabled";
+    }
+
+    return (
+      <div className="form-group">
+        <div className="col-sm-offset-1 col-sm-11">
+
+          <div className="col-sm-2">
+            <button type="button"
+              className={cls}
+              data-toggle="modal"
+              data-target="#confirmEntry"
+              title="入力した年表を登録する"
+              data-placement="bottom"
+              >
+              <span className="glyphicon glyphicon-plus" />&nbsp;登録
+            </button>
+          </div>
+
+          <div className="col-sm-2">
+            <button id="btnCloseInputField" className="btn btn-default form-control"
+              title="入力欄を閉じる" data-placement="bottom" data-toggle="tooltip"
+              type="button" onClick={this.props.onClose}>
+                <span className="glyphicon glyphicon-remove" />閉じる
+            </button>
+          </div>
+        </div>
+      </div>
+    );
+  }
+});
+
+/**
  * ヘッダコンテナ
  * @returns {HTML} ヘッダのReactオブジェクトを返す
  */
@@ -158,8 +199,18 @@ var InputField = React.createClass({
     // 和暦＞西暦変換
     return YearConverter.convWareki2AD(this.state.yearType, this.state.year);
   },
+  // 登録可能かチェック
+  validateInput: function() {
+    // 年、出来事が有効であること
+    return (this.state.year.length > 0)
+      &&  (this.state.desc.length > 0);
+  },
   // this.stateから、確認文字列を出力して返す
   getConfirmBody: function() {
+    // データが無効な時は空のデータを返す
+    if (!this.validateInput(this.state)) {
+      return <div></div>;
+    }
     var ret = "";
     for (var dt in this.state) {
       ret += "["+dt+"]"+this.state[dt]+" / ";
@@ -359,30 +410,10 @@ var InputField = React.createClass({
                 </div>
               </div>
 
-              <div className="form-group">
-                <div className="col-sm-offset-1 col-sm-11">
-
-                  <div className="col-sm-2">
-                    <button type="button"
-                      className="btn btn-primary form-control"
-                      data-toggle="modal"
-                      data-target="#confirmEntry"
-                      title="入力した年表を登録する"
-                      data-placement="bottom"
-                      >
-                      <span className="glyphicon glyphicon-plus" />&nbsp;登録
-                    </button>
-                  </div>
-
-                  <div className="col-sm-2">
-                    <button id="btnCloseInputField" className="btn btn-default form-control"
-                      title="入力欄を閉じる" data-placement="bottom" data-toggle="tooltip"
-                      type="button" onClick={this.props.handleCloseInput}>
-                        <span className="glyphicon glyphicon-remove" />閉じる
-                    </button>
-                  </div>
-                </div>
-              </div>
+              <EntryButtons
+                onClose={this.props.handleCloseInput}
+                enabled={this.validateInput()}
+              />
             </form>
           </div>
         </div>
